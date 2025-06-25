@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZDA</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin-top: 1rem;
+      margin-bottom: 0;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      padding: 0rem;
+      background: #f9f9fc;
+      color: #111;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin-left: 1rem;
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    h1 {
+      color: #234;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .contribute-button {
+      background: #000;
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .menu-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal, .qr-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      z-index: 1000;
+      max-width: 90%;
+      text-align: center;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .qr-code {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 1rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+    .progress-bar {
+      background: #eee;
+      border-radius: 10px;
+      height: 16px;
+      margin-top: 0.5rem;
+      position: relative;
+    }
+    .progress {
+      background: #808080;
+      height: 100%;
+      width: 35%;
+      border-radius: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .checkpoint {
+      position: absolute;
+      top: 0px;
+      width: 12px;
+      height: 12px;
+      background-color: white;
+      border: 2px solid #aaa;
+      border-radius: 50%;
+      transform: translateX(-00%);
+      z-index: 2;
+    }
+    .checkpoint.filled {
+      background-color: #000;
+      border-color: #aaa;
+    }
+    .checkpoint-label {
+      position: absolute;
+      top: 20px;
+      font-size: 0.65rem;
+      color: #555;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+    #about-section {
+  background-color: #000;
+  color: #fff;
+  margin: 2rem -2rem; /* Negative margin cancels body padding */
+  padding: 2rem;
+  margin-bottom: 0; /* No bottom margin to avoid gap */
+  width: calc(100% + 4rem); /* Stretch back to full width */
+}
+
+#about-section h2,
+#about-section p,
+#about-section ul,
+#about-section li,
+#about-section a {
+  color: #fff;
+}
+
+#about-section a {
+  text-decoration: underline;
+  color: #000;
+}
+.site-footer {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 0rem;
+  margin: 0rem -2rem;
+  width: calc(100% + 4rem);
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+.status-badge {
+  position: absolute;
+  top: 1rem;
+  right: 3rem; /* leave space next to ⋯ button */
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+}
+
+.status-completed {
+  background-color: #28a745;
+}
+
+.status-inprogress {
+  background-color: #000;
+}
+
+.status-blocked {
+  background-color: #dc3545;
+}
+
+.currency-toggle {
+  display: inline-flex;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.currency-toggle button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #555;
+  transition: background 0.3s, color 0.3s;
+}
+
+.currency-toggle button.active {
+  background: #000;
+  color: white;
+}
+
+.sort-button {
+  background: #000;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dropdown-menu div {
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-menu div:hover {
+  background-color: #eee;
+}
+
+
+
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ZDA</h1>
+    <nav>
+      <a href="#about-section">About</a>
+    </nav>
+  </header>
+
+  <p><strong>Building tools Zcash needs. Without influence. Without compromise.</strong></p>
+
+
+  <div style="display: flex; justify-content: space-around; margin-bottom: 2rem; font-family: sans-serif;">
+  <div>
+    <div style="font-size: 0.9rem; color: #555;">Available</div>
+    <div id="balance" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  </div>
+  <div>
+    <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
+    <div id="total-requested" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  </div>
+  <div>
+    <div style="font-size: 0.9rem; color: #555;">Total Received</div>
+    <div id="total-received" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  </div>
+</div>
+
+
+
+    
+    
+    </div>
+  </div>
+
+
+  <div style="margin-bottom: 1rem;">
+  <div class="sort-dropdown" style="position: relative; display: inline-block;">
+  <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
+  <div id="sort-menu" class="dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
+    <div onclick="selectSort('progress-desc')">Checkpoints Reached (High → Low)</div>
+    <div onclick="selectSort('progress-asc')">Checkpoints Reached (Low → High)</div>
+    <div onclick="selectSort('alpha-asc')">Alphabetical (A → Z)</div>
+    <div onclick="selectSort('alpha-desc')">Alphabetical (Z → A)</div>
+  </div>
+</div>
+
+  <input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; min-width: 250px;" />
+</div>
+
+<div id="backlog" class="grid"></div>
+
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(); closeQRModal();"></div>
+  <div class="modal" id="details-modal">
+    <h2>Details</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+  <div class="qr-modal" id="qr-modal">
+    <img src="qr_placeholder.png" alt="QR Code" class="qr-code">
+    <p>placeholder</p>
+    <button onclick="closeQRModal()">Close</button>
+  </div>
+
+
+<div id="about-section">
+  <h2 id="about">What is ZDA?</h2>
+  <p>ZDA is an independent development shop building <strong>secure, zero-knowledge-powered</strong> applications on Zcash. We operate outside the Dev Fund pipeline and are accountable only to our contributors.</p>
+
+  <h2>Why support ZDA?</h2>
+  <ul>
+    <li>👤 No conflicts of interest<br>Not tied to Dev Fund or their subsidiaries</li>
+    <li>🛡 Privacy-first approach<br>Every project uses Zcash shielded transactions</li>
+    <li>🔧 Innovation-centric<br>We build what no one else is prioritizing</li>
+  </ul>
+
+  <h2>Active Grants</h2>
+  <ul>
+    <li><strong>Short-term</strong> (1-3 months)<br>Launch ZP2 MVP, Infrastructure nodes</li>
+    <li><strong>Mid-term</strong> (6 months)<br>Iterate wallet UX, release SDK</li>
+    <li><strong>Long-term:</strong> Zcash-native data tools</li>
+  </ul>
+
+  <p>
+    Contact: <a href="mailto:zda@proton.me">zda@proton.me</a><br>
+    GitHub: <a href="#">Github</a><br>
+    <a href="#">Transparency / Milestone Archive</a>
+  </p>
+</div>
+
+
+  <script>
+  const zecToUsd = 44.85;
+  const cardContainer = document.getElementById('backlog');
+  let newCards = [];
+
+  function switchToUSD(id, amountZEC, targetZEC) {
+    const usdAmount = (amountZEC * zecToUsd).toFixed(2);
+    const usdTarget = (targetZEC * zecToUsd).toFixed(2);
+    document.getElementById(id).innerHTML = `<strong>Raised $${usdAmount} of $${usdTarget} USD</strong>`;
+  }
+
+  function switchToZEC(id, amountZEC, targetZEC) {
+    document.getElementById(id).innerHTML = `<strong>Raised ${amountZEC} of ${targetZEC} ZEC</strong>`;
+  }
+
+  function openModal(button) {
+  const modal = document.getElementById('details-modal');
+
+  const description = decodeURIComponent(button.getAttribute('data-description') || '');
+  const title = decodeURIComponent(button.getAttribute('data-title') || 'Details');
+  const tags = decodeURIComponent(button.getAttribute('data-tags') || '');
+  const priority = decodeURIComponent(button.getAttribute('data-priority') || '');
+  const milestonesJSON = decodeURIComponent(button.getAttribute('data-milestones') || '[]');
+
+  let milestones = [];
+  try {
+    milestones = JSON.parse(milestonesJSON);
+  } catch (e) {
+    console.error('Invalid milestones:', milestonesJSON);
+  }
+
+  // Description and extras
+  let html = `<p>${description || '<em>No description available</em>'}</p>`;
+
+  if (tags) {
+    html += `<p><strong>Tags:</strong> ${tags}</p>`;
+  }
+
+  html += `<p><strong>Priority:</strong> ${priority}</p>`;
+
+  if (milestones.length > 0) {
+    html += `<p><strong>Milestones:</strong></p><ul>`;
+    milestones.forEach(m => {
+      html += `<li>${m.name} ${m.completed ? '✅' : '⏳'}</li>`;
+    });
+    html += `</ul>`;
+  }
+
+  modal.querySelector('h2').textContent = title;
+  modal.querySelector('p').innerHTML = html;
+
+  document.getElementById('modal-overlay').style.display = 'block';
+  modal.style.display = 'block';
+}
+
+
+
+
+  function closeModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.getElementById('details-modal').style.display = 'none';
+  }
+
+  function openQRModal(button) {
+  const walletsAttr = button.getAttribute('data-wallets');
+  let wallets = [];
+  try {
+    wallets = JSON.parse(walletsAttr);
+  } catch (e) {
+    console.error('Invalid wallet_addresses:', walletsAttr);
+  }
+
+  const content = wallets.length
+    ? wallets.map(addr => `<code>${addr}</code>`).join('<br>')
+    : '<em>No wallet address available</em>';
+
+  const qrModal = document.getElementById('qr-modal');
+  qrModal.querySelector('p').innerHTML = content;
+
+  document.getElementById('modal-overlay').style.display = 'block';
+  qrModal.style.display = 'block';
+}
+
+
+
+  function closeQRModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.getElementById('qr-modal').style.display = 'none';
+  }
+
+  function setActiveToggle(button) {
+    const parent = button.parentElement;
+    parent.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+  }
+
+  function createCard({ id, title, date, contributors, raised, target, progress, creators, status, wallet_addresses, description, tags, priority, milestones }) {
+    let statusClass = '';
+    if (status === 'COMPLETED') statusClass = 'status-completed';
+    else if (status === 'IN PROGRESS') statusClass = 'status-inprogress';
+    else if (status === 'BLOCKED') statusClass = 'status-blocked';
+
+    return `
+      <div class="card">
+        <button
+  class="menu-button"
+  onclick="openModal(this)"
+  data-description="${encodeURIComponent(description)}"
+  data-title="${encodeURIComponent(title)}"
+  data-tags="${encodeURIComponent((tags || []).join(', '))}"
+  data-priority="${encodeURIComponent(priority || 'N/A')}"
+  data-milestones='${encodeURIComponent(JSON.stringify(milestones || []))}'
+>⋯</button>
+        <div class="status-badge ${statusClass}">${status}</div>
+        <h3>${title}</h3>
+        <p>👤 ${creators}<br>📅 ${date}<br>👥 ${contributors} contributors</p>
+
+        <div class="currency-toggle">
+          <button onclick="switchToUSD('${id}', ${raised}, ${target}); setActiveToggle(this)">USD</button>
+          <button onclick="switchToZEC('${id}', ${raised}, ${target}); setActiveToggle(this)" class="active">ZEC</button>
+        </div>
+
+        <p id="${id}"><strong>Raised ${raised} of ${target} ZEC</strong></p>
+        <div class="progress-bar" data-progress="${progress}">
+          <div class="progress" style="width: ${progress}%;"></div>
+          <div class="checkpoint" style="left: 0%;"></div>
+          <div class="checkpoint-label" style="left: 8%">Analyze</div>
+          <div class="checkpoint" style="left: 25%;"></div>
+          <div class="checkpoint-label" style="left: 26%">Design</div>
+          <div class="checkpoint" style="left: 50%;"></div>
+          <div class="checkpoint-label" style="left: 51%">Develop</div>
+          <div class="checkpoint" style="left: 75%;"></div>
+          <div class="checkpoint-label" style="left: 76%">Deploy</div>
+          <div class="checkpoint" style="left: 98%;"></div>
+          <div class="checkpoint-label" style="left: 98%">Maintain</div>
+        </div>
+        <br>
+        <button class="contribute-button" onclick="openQRModal(this)" data-wallets='${JSON.stringify(wallet_addresses)}'>CONTRIBUTE</button>
+      </div>
+    `;
+  }
+
+  function renderSortedCards() {
+    const sortType = currentSort;
+    const searchQuery = document.getElementById('search').value.toLowerCase();
+    let sorted = [...newCards].filter(card => {
+  if (!searchQuery) return true;
+  const titleMatch = card.title.toLowerCase().includes(searchQuery);
+  const tagsMatch = (card.tags || []).some(tag =>
+    tag.toLowerCase().includes(searchQuery)
+  );
+  return titleMatch || tagsMatch;
+});
+
+
+    if (sortType === 'progress-desc') {
+      sorted.sort((a, b) => b.progress - a.progress);
+    } else if (sortType === 'progress-asc') {
+      sorted.sort((a, b) => a.progress - b.progress);
+    } else if (sortType === 'alpha-asc') {
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortType === 'alpha-desc') {
+      sorted.sort((a, b) => b.title.localeCompare(a.title));
+    }
+
+    cardContainer.innerHTML = '';
+    sorted.forEach(card => {
+      cardContainer.innerHTML += createCard(card);
+    });
+
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+      const percent = parseFloat(bar.dataset.progress);
+      bar.querySelectorAll('.checkpoint').forEach(cp => {
+        const match = cp.style.left.match(/(\d+(?:\.\d+)?)%/);
+        if (match) {
+          const leftPercent = parseFloat(match[1]);
+          if (percent >= leftPercent) {
+            cp.classList.add('filled');
+          }
+        }
+      });
+    });
+  }
+
+  // Fetch data and render on page load
+  window.addEventListener('DOMContentLoaded', () => {
+  fetch('https://zdafunding-api.onrender.com/api/v1/cards')
+    .then(response => response.json())
+    .then(data => {
+      newCards = data.cards.map(card => ({
+        id: card.id,
+        title: card.title,
+        date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        contributors: card.contributors || 0,
+        raised: parseFloat(card.funding_received),
+        target: parseFloat(card.funding_requested),
+        progress: parseFloat(card.percent_funded),
+        creators: (card.creators || []).join(" & "),
+        status: card.status || "IN PROGRESS",
+        wallet_addresses: card.wallet_addresses || [],
+        description: card.description || '',
+        tags: card.tags || [],
+        priority: card.priority || 'N/A',
+        milestones: card.milestones || []
+
+      }));
+      renderSortedCards();
+      updateTotals(data.cards);
+    })
+    .catch(error => {
+      console.error('Failed to load card data:', error);
+      cardContainer.innerHTML = '<p>Error loading cards. Please try again later.</p>';
+    });
+});
+
+function updateTotals(cards) {
+  const totalRequested = cards.reduce((sum, c) => sum + parseFloat(c.funding_requested || 0), 0);
+  const totalReceived = cards.reduce((sum, c) => sum + parseFloat(c.funding_received || 0), 0);
+  const balance = cards.reduce((sum, c) => sum + parseFloat(c.funding_available || 0), 0);
+
+  document.getElementById('total-requested').textContent = `${totalRequested.toFixed(3)} ZEC`;
+  document.getElementById('total-received').textContent = `${totalReceived.toFixed(3)} ZEC`;
+  document.getElementById('balance').textContent = `${balance.toFixed(3)} ZEC`;
+}
+
+let currentSort = 'progress-desc';
+
+function toggleSortMenu() {
+  const menu = document.getElementById('sort-menu');
+  menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+}
+
+function selectSort(type) {
+  currentSort = type;
+  document.getElementById('sort-menu').style.display = 'none';
+  renderSortedCards();
+}
+
+window.addEventListener('click', e => {
+  const menu = document.getElementById('sort-menu');
+  if (!e.target.closest('.sort-dropdown')) {
+    menu.style.display = 'none';
+  }
+});
+
+
+</script>
+
+<footer class="site-footer">
+  <p>© 2025 ZDA. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
