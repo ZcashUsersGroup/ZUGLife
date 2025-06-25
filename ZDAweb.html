@@ -15,6 +15,7 @@
       background: #f9f9fc;
       color: #111;
       min-height: 100vh;
+      overflow-x: hidden;
     }
     header {
       display: flex;
@@ -257,6 +258,34 @@
   border-right: none;
 }
 
+#status-filter {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.status-toggle {
+  display: inline-flex;
+  border: 2px solid black;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.status-toggle button {
+  padding: 0.4rem 1rem;
+  background: #e0e0e0;
+  border: none;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #000;
+  transition: background 0.2s;
+}
+
+.status-toggle button.active {
+  background: #000;
+  color: white;
+}
+
 
 
 
@@ -278,18 +307,38 @@
   <div class="stats-inner">
     <div>
       <div style="font-size: 0.9rem; color: #555;">Available</div>
-      <div id="balance" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="balance-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="balance-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
     </div>
     <div>
       <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
-      <div id="total-requested" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-requested-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-requested-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  
     </div>
     <div>
       <div style="font-size: 0.9rem; color: #555;">Total Received</div>
-      <div id="total-received" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-received-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-received-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  
+    </div>
+    <div>
+      <div style="font-size: 0.9rem; color: #555;">Total Spent</div>
+      <div id="total-spent-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-spent-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  
+    </div>
+    <div>
+      <div style="font-size: 0.9rem; color: #555;">Total Earned</div>
+      <div id="total-earned-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      <div id="total-earned-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  
     </div>
   </div>
 </div>
+
+
+
 
 
 
@@ -305,6 +354,19 @@
 </div>
 
   <input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; min-width: 250px;" />
+
+  <div class="status-toggle" id="status-toggle">
+  <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">IN PROGRESS</button>
+  <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">COMPLETED</button>
+  <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">BLOCKED</button>
+</div>
+
+<div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 1rem;">
+  <button onclick="switchSummaryCurrency('USD', this)">USD</button>
+  <button onclick="switchSummaryCurrency('ZEC', this)" class="active">ZEC</button>
+</div>
+
+
 </div>
 
 <div id="backlog" class="grid"></div>
@@ -322,35 +384,41 @@
   </div>
 
 
-<div id="about-section">
-  <h2 id="about">What is ZDA?</h2>
-  <p>ZDA is an independent development shop building <strong>secure, zero-knowledge-powered</strong> applications on Zcash. We operate outside the Dev Fund pipeline and are accountable only to our contributors.</p>
-
-  <h2>Why support ZDA?</h2>
-  <ul>
-    <li>👤 No conflicts of interest<br>Not tied to Dev Fund or their subsidiaries</li>
-    <li>🛡 Privacy-first approach<br>Every project uses Zcash shielded transactions</li>
-    <li>🔧 Innovation-centric<br>We build what no one else is prioritizing</li>
-  </ul>
-
-  <h2>Active Grants</h2>
-  <ul>
-    <li><strong>Short-term</strong> (1-3 months)<br>Launch ZP2 MVP, Infrastructure nodes</li>
-    <li><strong>Mid-term</strong> (6 months)<br>Iterate wallet UX, release SDK</li>
-    <li><strong>Long-term:</strong> Zcash-native data tools</li>
-  </ul>
-
-  <p>
-    Zcash is suitable for messaging.<br>
-    Zcash can be used for reactive systems.<br>
-    Zcash can be to drive architecture logic.<br>
-    <br>
-    <b><i>ZDA2050</i></b>
+<div id="about-section" style="background: black; color: white; padding: 2rem; text-align: left; font-family: system-ui, sans-serif;">
+  <p style="margin-bottom: 2rem; white-space: pre-line;">
+    Zcash is suitable for messaging.
+    Zcash can be used for reactive systems.
+    Zcash can be used drive architecture logic.
   </p>
+
+  <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
+    <div style="width: 250px; height: 250px; border: 2px solid white; display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic;">
+      QR -<br>GENERAL<br>FUND
+    </div>
+  </div>
+
+  <p style="text-align: center; font-style: italic; margin-top: -1rem;">SEND ZCASH W/ MEMO IN SUPPORT OF ZDA</p>
+
+  <p style="text-align: right; margin-right: 5rem; margin-top: 3rem;">ZDA2050</p>
 </div>
 
 
+
   <script>
+    let activeStatuses = [];
+function toggleStatusFilter(button) {
+  const status = button.getAttribute('data-status');
+  const index = activeStatuses.indexOf(status);
+  if (index === -1) {
+    activeStatuses.push(status);
+    button.classList.add('active');
+  } else {
+    activeStatuses.splice(index, 1);
+    button.classList.remove('active');
+  }
+  renderSortedCards();
+}
+
   const zecToUsd = 44.85;
   const cardContainer = document.getElementById('backlog');
   let newCards = [];
@@ -467,10 +535,7 @@
         <h3>${title}</h3>
         <p>👤 ${creators}<br>📅 ${date}<br>👥 ${contributors} contributors</p>
 
-        <div class="currency-toggle">
-          <button onclick="switchToUSD('${id}', ${raised}, ${target}); setActiveToggle(this)">USD</button>
-          <button onclick="switchToZEC('${id}', ${raised}, ${target}); setActiveToggle(this)" class="active">ZEC</button>
-        </div>
+        
 
         <p id="${id}"><strong>Raised ${raised} of ${target} ZEC</strong></p>
         <div class="progress-bar" data-progress="${progress}">
@@ -493,49 +558,88 @@
   }
 
   function renderSortedCards() {
-    const sortType = currentSort;
-    const searchQuery = document.getElementById('search').value.toLowerCase();
-    let sorted = [...newCards].filter(card => {
-  if (!searchQuery) return true;
-  const titleMatch = card.title.toLowerCase().includes(searchQuery);
-  const tagsMatch = (card.tags || []).some(tag =>
-    tag.toLowerCase().includes(searchQuery)
-  );
-  return titleMatch || tagsMatch;
-});
+  const sortType = currentSort;
+  const searchQuery = document.getElementById('search').value.toLowerCase();
 
+  let sorted = [...newCards].filter(card => {
+    const matchesSearch = !searchQuery ||
+      card.title.toLowerCase().includes(searchQuery) ||
+      (card.tags || []).some(tag => tag.toLowerCase().includes(searchQuery));
 
-    if (sortType === 'progress-desc') {
-      sorted.sort((a, b) => b.progress - a.progress);
-    } else if (sortType === 'progress-asc') {
-      sorted.sort((a, b) => a.progress - b.progress);
-    } else if (sortType === 'alpha-asc') {
-      sorted.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortType === 'alpha-desc') {
-      sorted.sort((a, b) => b.title.localeCompare(a.title));
-    }
+    const matchesStatus = activeStatuses.length === 0 || activeStatuses.includes(card.status);
 
-    cardContainer.innerHTML = '';
-    sorted.forEach(card => {
-      cardContainer.innerHTML += createCard(card);
-    });
+    return matchesSearch && matchesStatus;
+  });
 
-    document.querySelectorAll('.progress-bar').forEach(bar => {
-      const percent = parseFloat(bar.dataset.progress);
-      bar.querySelectorAll('.checkpoint').forEach(cp => {
-        const match = cp.style.left.match(/(\d+(?:\.\d+)?)%/);
-        if (match) {
-          const leftPercent = parseFloat(match[1]);
-          if (percent >= leftPercent) {
-            cp.classList.add('filled');
-          }
-        }
-      });
-    });
+  if (sortType === 'progress-desc') {
+    sorted.sort((a, b) => b.progress - a.progress);
+  } else if (sortType === 'progress-asc') {
+    sorted.sort((a, b) => a.progress - b.progress);
+  } else if (sortType === 'alpha-asc') {
+    sorted.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortType === 'alpha-desc') {
+    sorted.sort((a, b) => b.title.localeCompare(a.title));
   }
+
+  // Render cards
+  cardContainer.innerHTML = '';
+  sorted.forEach(card => {
+    cardContainer.innerHTML += createCard(card);
+  });
+
+  // Fill checkpoints
+  document.querySelectorAll('.progress-bar').forEach(bar => {
+    const percent = parseFloat(bar.dataset.progress);
+    bar.querySelectorAll('.checkpoint').forEach(cp => {
+      const match = cp.style.left.match(/(\d+(?:\.\d+)?)%/);
+      if (match) {
+        const leftPercent = parseFloat(match[1]);
+        if (percent >= leftPercent) {
+          cp.classList.add('filled');
+        }
+      }
+    });
+  });
+
+  // 🧠 Apply current currency toggle to new cards
+  const isUSD = document.querySelector('#summary-currency-toggle button.active')?.textContent === 'USD';
+  sorted.forEach(card => {
+    if (isUSD) {
+      switchToUSD(card.id, card.raised, card.target);
+    } else {
+      switchToZEC(card.id, card.raised, card.target);
+    }
+  });
+}
+
 
   // Fetch data and render on page load
   window.addEventListener('DOMContentLoaded', () => {
+
+fetch('https://zdafunding-api.onrender.com/api/v1/funding-summary')
+  .then(res => res.json())
+  .then(summary => {
+    const fields = [
+      { key: 'balance', value: summary.total_available },
+      { key: 'total-requested', value: summary.total_requested },
+      { key: 'total-received', value: summary.total_received },
+      { key: 'total-spent', value: summary.total_spent },
+      { key: 'total-earned', value: summary.total_earned },
+    ];
+
+    fields.forEach(({ key, value }) => {
+      const zec = parseFloat(value).toFixed(3);
+      const usd = (parseFloat(value) * zecToUsd).toFixed(2);
+      document.getElementById(`${key}-zec`).textContent = `${zec} ZEC`;
+      document.getElementById(`${key}-usd`).textContent = `$${usd} USD`;
+    });
+  })
+  .catch(err => {
+    console.error("Failed to fetch funding summary:", err);
+  });
+
+
+
   fetch('https://zdafunding-api.onrender.com/api/v1/cards')
     .then(response => response.json())
     .then(data => {
@@ -557,23 +661,12 @@
 
       }));
       renderSortedCards();
-      updateTotals(data.cards);
     })
     .catch(error => {
       console.error('Failed to load card data:', error);
       cardContainer.innerHTML = '<p>Error loading cards. Please try again later.</p>';
     });
 });
-
-function updateTotals(cards) {
-  const totalRequested = cards.reduce((sum, c) => sum + parseFloat(c.funding_requested || 0), 0);
-  const totalReceived = cards.reduce((sum, c) => sum + parseFloat(c.funding_received || 0), 0);
-  const balance = cards.reduce((sum, c) => sum + parseFloat(c.funding_available || 0), 0);
-
-  document.getElementById('total-requested').textContent = `${totalRequested.toFixed(3)} ZEC`;
-  document.getElementById('total-received').textContent = `${totalReceived.toFixed(3)} ZEC`;
-  document.getElementById('balance').textContent = `${balance.toFixed(3)} ZEC`;
-}
 
 let currentSort = 'progress-desc';
 
@@ -594,6 +687,33 @@ window.addEventListener('click', e => {
     menu.style.display = 'none';
   }
 });
+
+function switchSummaryCurrency(to, clickedButton) {
+  const pairs = ['balance', 'total-requested', 'total-received', 'total-spent', 'total-earned'];
+  pairs.forEach(key => {
+    document.getElementById(`${key}-zec`).style.display = to === 'ZEC' ? 'block' : 'none';
+    document.getElementById(`${key}-usd`).style.display = to === 'USD' ? 'block' : 'none';
+  });
+
+  // Update all card displays to selected currency
+  newCards.forEach(card => {
+    if (to === 'USD') {
+      switchToUSD(card.id, card.raised, card.target);
+    } else {
+      switchToZEC(card.id, card.raised, card.target);
+    }
+  });
+
+  // Update summary toggle button appearance
+  const summaryButtons = document.querySelectorAll('#summary-currency-toggle button');
+  summaryButtons.forEach(btn => btn.classList.remove('active'));
+  if (clickedButton) clickedButton.classList.add('active');
+}
+
+
+
+
+
 
 
 </script>
