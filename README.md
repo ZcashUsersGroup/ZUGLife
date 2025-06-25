@@ -20,13 +20,13 @@ A simple interactive frontend that displays Zcash-related projects from the ZDA 
 ## Getting Started
 
 1. Clone or download this repository.
-2. Open `tempweb.html` in any modern browser.
+2. Open `ZDAweb.html` in any modern browser.
 3. Ensure you have internet access to fetch data from the API.
 
 ### File Structure
 
 ```
-tempweb.html       # Main HTML file with embedded CSS and JS
+ZDAweb.html       # Main HTML file with embedded CSS and JS
 README.md        # This file
 ```
 
@@ -46,7 +46,7 @@ The response includes:
 
 ## Customization
 
-- To change styling, edit the embedded `<style>` block in `tempweb.html`.
+- To change styling, edit the embedded `<style>` block in `ZDAweb.html`.
 - To extend functionality (e.g., QR code rendering), update the JavaScript section at the bottom of the HTML.
 
 ## Future Improvements
