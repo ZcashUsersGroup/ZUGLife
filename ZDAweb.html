@@ -232,6 +232,31 @@
   background-color: #eee;
 }
 
+.stats-box {
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 2rem 0;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.stats-inner {
+  display: flex;
+  justify-content: space-around;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.stats-inner > div {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+
+.stats-inner > div:last-child {
+  border-right: none;
+}
+
 
 
 
@@ -249,27 +274,23 @@
   <p><strong>Building tools Zcash needs. Without influence. Without compromise.</strong></p>
 
 
-  <div style="display: flex; justify-content: space-around; margin-bottom: 2rem; font-family: sans-serif;">
-  <div>
-    <div style="font-size: 0.9rem; color: #555;">Available</div>
-    <div id="balance" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  </div>
-  <div>
-    <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
-    <div id="total-requested" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  </div>
-  <div>
-    <div style="font-size: 0.9rem; color: #555;">Total Received</div>
-    <div id="total-received" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  <div class="stats-box">
+  <div class="stats-inner">
+    <div>
+      <div style="font-size: 0.9rem; color: #555;">Available</div>
+      <div id="balance" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+    </div>
+    <div>
+      <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
+      <div id="total-requested" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+    </div>
+    <div>
+      <div style="font-size: 0.9rem; color: #555;">Total Received</div>
+      <div id="total-received" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+    </div>
   </div>
 </div>
 
-
-
-    
-    
-    </div>
-  </div>
 
 
   <div style="margin-bottom: 1rem;">
@@ -320,9 +341,11 @@
   </ul>
 
   <p>
-    Contact: <a href="mailto:zda@proton.me">zda@proton.me</a><br>
-    GitHub: <a href="#">Github</a><br>
-    <a href="#">Transparency / Milestone Archive</a>
+    Zcash is suitable for messaging.<br>
+    Zcash can be used for reactive systems.<br>
+    Zcash can be to drive architecture logic.<br>
+    <br>
+    <b><i>ZDA2050</i></b>
   </p>
 </div>
 
