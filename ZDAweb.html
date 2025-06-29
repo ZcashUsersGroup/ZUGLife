@@ -679,7 +679,7 @@ function toggleStatusFilter(button) {
   // Fetch data and render on page load
   window.addEventListener('DOMContentLoaded', () => {
 
-fetch('https://zdafunding-api.onrender.com/api/v1/funding-summary')
+fetch('https://zdafunding-api-mf6k.onrender.com/api/v1/funding-summary')
   .then(res => res.json())
   .then(summary => {
     const fields = [
@@ -703,7 +703,7 @@ fetch('https://zdafunding-api.onrender.com/api/v1/funding-summary')
 
 
 
-  fetch('https://zdafunding-api.onrender.com/api/v1/cards')
+  fetch('https://zdafunding-api-mf6k.onrender.com/api/v1/cards')
     .then(response => response.json())
     .then(data => {
       newCards = data.cards.map(card => ({
