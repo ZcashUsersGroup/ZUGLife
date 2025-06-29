@@ -340,6 +340,26 @@
   background-color: #eee;
 }
 
+.milestone-label {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.milestone-label:hover {
+  background-color: #ddd;
+}
+
+.checkpoint {
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.checkpoint:hover {
+  background-color: #ccc;
+  border-color: #555;
+}
 
 
   </style>
@@ -399,6 +419,13 @@
   <p id="summary-description">Loading...</p>
   <button onclick="closeSummaryModal()">Close</button>
 </div>
+
+<div class="modal" id="milestone-modal">
+  <h2 id="milestone-title">Milestone</h2>
+  <p id="milestone-description">Loading...</p>
+  <button onclick="closeMilestoneModal()">Close</button>
+</div>
+
 
 </div>
 
@@ -602,17 +629,33 @@ function toggleStatusFilter(button) {
 
         <p id="${id}"><strong>Raised ${raised} of ${target} ZEC</strong></p>
         <div class="progress-bar" data-progress="${progress}">
-          <div class="progress" style="width: ${progress}%;"></div>
-          <div class="checkpoint" style="left: 0%;"></div>
-          <div class="checkpoint-label" style="left: 1%">Analyze</div>
-          <div class="checkpoint" style="left: 25%;"></div>
-          <div class="checkpoint-label" style="left: 26%">Design</div>
-          <div class="checkpoint" style="left: 50%;"></div>
-          <div class="checkpoint-label" style="left: 51%">Develop</div>
-          <div class="checkpoint" style="left: 75%;"></div>
-          <div class="checkpoint-label" style="left: 76%">Deploy</div>
-          <div class="checkpoint" style="left: 98%;"></div>
-          <div class="checkpoint-label" style="left: 98%">Maintain</div>
+          <div class="progress" style="width: ${progress}%;"></div> 
+          <div class="checkpoint" style="left: 0%;" data-milestone="Analyze" onclick="showMilestoneInfo('Analyze')"></div>
+
+          <div class="checkpoint-label" style="left: 1%">
+  <span class="milestone-label" onclick="showMilestoneInfo('Analyze')">Analyze</span>
+</div>
+
+          <div class="checkpoint" style="left: 25%;" data-milestone="Design" onclick="showMilestoneInfo('Design')"></div>
+
+          <div class="checkpoint-label" style="left: 26%">
+            <span class="milestone-label" onclick="showMilestoneInfo('Design')">Design</span>
+</div>
+          <div class="checkpoint" style="left: 50%;" data-milestone="Develop" onclick="showMilestoneInfo('Develop')"></div>
+
+          <div class="checkpoint-label" style="left: 51%">
+            <span class="milestone-label" onclick="showMilestoneInfo('Develop')">Develop</span>
+</div>
+          <div class="checkpoint" style="left: 75%;" data-milestone="Deploy" onclick="showMilestoneInfo('Deploy')"></div>
+
+          <div class="checkpoint-label" style="left: 76%">
+            <span class="milestone-label" onclick="showMilestoneInfo('Deploy')">Deploy</span>
+</div>
+          <div class="checkpoint" style="left: 98%;" data-milestone="Maintain" onclick="showMilestoneInfo('Maintain')"></div>
+
+          <div class="checkpoint-label" style="left: 98%">
+            <span class="milestone-label" onclick="showMilestoneInfo('Maintain')">Maintain</span>
+</div>
         </div>
         <br>
         <button class="contribute-button" onclick="openQRModal(this)" data-wallets='${JSON.stringify(wallet_addresses)}'>CONTRIBUTE</button>
@@ -808,6 +851,25 @@ function closeSummaryModal() {
   document.getElementById("summary-modal").style.display = 'none';
 }
 
+const milestoneDescriptions = {
+  "Analyze": "Understanding the problem, gathering requirements, and planning the work.",
+  "Design": "Architecting the solution and preparing specifications or prototypes.",
+  "Develop": "Writing and testing code or content to implement the solution.",
+  "Deploy": "Releasing the solution into production or public view.",
+  "Maintain": "Monitoring, fixing issues, and improving the system post-launch."
+};
+
+function showMilestoneInfo(name) {
+  document.getElementById("milestone-title").textContent = name;
+  document.getElementById("milestone-description").textContent = milestoneDescriptions[name] || "No description available.";
+  document.getElementById("modal-overlay").style.display = 'block';
+  document.getElementById("milestone-modal").style.display = 'block';
+}
+
+function closeMilestoneModal() {
+  document.getElementById("modal-overlay").style.display = 'none';
+  document.getElementById("milestone-modal").style.display = 'none';
+}
 
 
 </script>
