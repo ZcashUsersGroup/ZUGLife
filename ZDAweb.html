@@ -159,7 +159,7 @@
 }
 .site-footer {
   background-color: #000;
-  color: #fff;
+  color: #000;
   text-align: center;
   padding: 1rem;
   margin-top: 0rem;
@@ -181,28 +181,33 @@
 
 .status-completed {
   background-color: #28a745;
+  fill-opacity: 0.8;
 }
 
 .status-inprogress {
-  background-color: #000;
+  background-color: #FDDA0D;
+  fill-opacity: 0.8;
 }
 
 .status-blocked {
   background-color: #dc3545;
+  fill-opacity: 0.8;
 }
 
 .currency-toggle {
   display: inline-flex;
-  border: 1px solid #ccc;
-  border-radius: 20px;
+  border: 2px solid #000;
+  border-radius: 12px;
   overflow: hidden;
   margin: 0.5rem 0;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .currency-toggle button {
   background: none;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   cursor: pointer;
   font-weight: bold;
   color: #555;
@@ -213,6 +218,7 @@
   background: #000;
   color: white;
 }
+
 
 .sort-button {
   background: #000;
@@ -252,7 +258,15 @@
 .stats-inner > div {
   flex: 1;
   border-right: 1px solid #ccc;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+.stats-inner > div:hover {
+  background-color: #f0f0f0;
+}
+
 
 .stats-inner > div:last-child {
   border-right: none;
@@ -265,20 +279,23 @@
 
 .status-toggle {
   display: inline-flex;
-  border: 2px solid black;
-  border-radius: 999px;
+  border: 2px solid #000;
+  border-radius: 12px;
   overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin: 0.5rem 0;
 }
 
 .status-toggle button {
-  padding: 0.4rem 1rem;
-  background: #e0e0e0;
+  padding: 0.4rem 1.2rem;
+  background: none;
   border: none;
   font-weight: bold;
   font-size: 0.85rem;
   cursor: pointer;
-  color: #000;
-  transition: background 0.2s;
+  color: #555;
+  transition: background 0.2s, color 0.2s;
 }
 
 .status-toggle button.active {
@@ -286,6 +303,42 @@
   color: white;
 }
 
+
+.hamburger-menu {
+  position: relative;
+}
+
+.hamburger-icon {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-dropdown {
+  display: none;
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 20;
+  min-width: 120px;
+}
+
+.hamburger-dropdown a {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+.hamburger-dropdown a:hover {
+  background-color: #eee;
+}
 
 
 
@@ -295,9 +348,13 @@
 <body>
   <header>
     <h1>ZDA</h1>
-    <nav>
-      <a href="#about-section">About</a>
-    </nav>
+    <nav class="hamburger-menu">
+  <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
+  <div id="hamburger-dropdown" class="hamburger-dropdown">
+    <a href="#about-section">About</a>
+  </div>
+</nav>
+
   </header>
 
   <p><strong>Building tools Zcash needs. Without influence. Without compromise.</strong></p>
@@ -305,42 +362,51 @@
 
   <div class="stats-box">
   <div class="stats-inner">
-    <div>
-      <div style="font-size: 0.9rem; color: #555;">Available</div>
-      <div id="balance-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-      <div id="balance-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-    </div>
-    <div>
-      <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
+    <div onclick="openSummaryModal('available')">
+  <div style="font-size: 0.9rem; color: #555;">Available</div>
+  <div id="balance-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+  <div id="balance-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+</div>
+
+    <div onclick="openSummaryModal('requested')">
+  <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
       <div id="total-requested-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
       <div id="total-requested-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
   
     </div>
-    <div>
+    <div onclick="openSummaryModal('received')">
       <div style="font-size: 0.9rem; color: #555;">Total Received</div>
       <div id="total-received-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
       <div id="total-received-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
   
     </div>
-    <div>
+    <div onclick="openSummaryModal('spent')">
       <div style="font-size: 0.9rem; color: #555;">Total Spent</div>
       <div id="total-spent-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
       <div id="total-spent-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
   
     </div>
-    <div>
+   <div onclick="openSummaryModal('earned')">
       <div style="font-size: 0.9rem; color: #555;">Total Earned</div>
       <div id="total-earned-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
       <div id="total-earned-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
   
     </div>
   </div>
+
+  <div class="modal" id="summary-modal">
+  <h2 id="summary-title">Summary</h2>
+  <p id="summary-description">Loading...</p>
+  <button onclick="closeSummaryModal()">Close</button>
+</div>
+
 </div>
 
 
 
 
 
+<input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; min-width: 250px;" />
 
   <div style="margin-bottom: 1rem;">
   <div class="sort-dropdown" style="position: relative; display: inline-block;">
@@ -353,8 +419,7 @@
   </div>
 </div>
 
-  <input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; min-width: 250px;" />
-
+  
   <div class="status-toggle" id="status-toggle">
   <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">IN PROGRESS</button>
   <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">COMPLETED</button>
@@ -386,20 +451,18 @@
 
 <div id="about-section" style="background: black; color: white; padding: 2rem; text-align: left; font-family: system-ui, sans-serif;">
   <p style="margin-bottom: 2rem; white-space: pre-line;">
-    Zcash is suitable for messaging.
-    Zcash can be used for reactive systems.
-    Zcash can be used drive architecture logic.
+    Thanks for supporting our team!
   </p>
 
   <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
-    <div style="width: 250px; height: 250px; border: 2px solid white; display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic;">
-      QR -<br>GENERAL<br>FUND
+    <div style="width: 200px; height: 200px; border: 2px solid white; display: flex; align-items: center; justify-content: center; text-align: center; position: relative;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=t1MkgrZASAJbtNzEagDtUbapFKiS7sNQihm" alt="QR Code" style="width: 200px; height: 200px;" />
     </div>
   </div>
 
-  <p style="text-align: center; font-style: italic; margin-top: -1rem;">SEND ZCASH W/ MEMO IN SUPPORT OF ZDA</p>
+  <p style="text-align: center; font-style: italic; margin-top: -1rem;">ZDA GENERAL FUND</p>
 
-  <p style="text-align: right; margin-right: 5rem; margin-top: 3rem;">ZDA2050</p>
+  <p style="text-align: right; margin-right: 5rem; margin-top: 3rem;">© 2025 ZDA. All rights reserved.</p>
 </div>
 
 
@@ -541,7 +604,7 @@ function toggleStatusFilter(button) {
         <div class="progress-bar" data-progress="${progress}">
           <div class="progress" style="width: ${progress}%;"></div>
           <div class="checkpoint" style="left: 0%;"></div>
-          <div class="checkpoint-label" style="left: 8%">Analyze</div>
+          <div class="checkpoint-label" style="left: 1%">Analyze</div>
           <div class="checkpoint" style="left: 25%;"></div>
           <div class="checkpoint-label" style="left: 26%">Design</div>
           <div class="checkpoint" style="left: 50%;"></div>
@@ -711,15 +774,46 @@ function switchSummaryCurrency(to, clickedButton) {
 }
 
 
+function toggleHamburger() {
+  const dropdown = document.getElementById("hamburger-dropdown");
+  dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+}
+
+window.addEventListener("click", function(event) {
+  const dropdown = document.getElementById("hamburger-dropdown");
+  const isHamburger = event.target.closest(".hamburger-menu");
+  if (!isHamburger) {
+    dropdown.style.display = "none";
+  }
+});
 
 
+const summaryDescriptions = {
+  available: "Funds currently available in the wallet.",
+  requested: "Total ZEC that has been requested across all proposals.",
+  received: "Total ZEC received through donations or other contributions.",
+  spent: "Total ZEC that has already been allocated or spent.",
+  earned: "Total ZEC earned through completed work or milestones."
+};
+
+function openSummaryModal(type) {
+  document.getElementById("summary-title").textContent = type.charAt(0).toUpperCase() + type.slice(1);
+  document.getElementById("summary-description").textContent = summaryDescriptions[type] || "No description available.";
+  document.getElementById("modal-overlay").style.display = 'block';
+  document.getElementById("summary-modal").style.display = 'block';
+}
+
+function closeSummaryModal() {
+  document.getElementById("modal-overlay").style.display = 'none';
+  document.getElementById("summary-modal").style.display = 'none';
+}
 
 
 
 </script>
 
 <footer class="site-footer">
-  <p>© 2025 ZDA. All rights reserved.</p>
+  <p>Jax was here</p>
 </footer>
 
 </body>
