@@ -34,8 +34,11 @@ README.md        # This file
 
 This frontend fetches data from:
 
+
+~~~https://zdafunding-api.onrender-.com/api/v1/cards~~~
+
 ```
-https://zdafunding-api.onrender.com/api/v1/cards
+https://zdafunding-api-mf6k.onrender.com/
 ```
 
 The response includes:
