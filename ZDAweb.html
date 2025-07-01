@@ -379,6 +379,7 @@ nav.hamburger-menu {
 <body>
   <header>
     <h1>ZDA</h1>
+<input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; max-width: 250px;" />
     <nav class="hamburger-menu">
   <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
   <div id="hamburger-dropdown" class="hamburger-dropdown">
@@ -388,7 +389,7 @@ nav.hamburger-menu {
 
   </header>
 
-  <p><strong>Zcash Driven Applications</strong></p>
+  <p><strong></strong></p>
 
 
   <div class="stats-box">
@@ -444,9 +445,8 @@ nav.hamburger-menu {
 
 
 
-<input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; min-width: 250px;" />
 
-  <div style="margin-bottom: 1rem;">
+  <div style="margin-bottom: 1rem; margin-left: 30%;">
   <div class="sort-dropdown" style="position: relative; display: inline-block;">
   <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
   <div id="sort-menu" class="dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
@@ -459,9 +459,9 @@ nav.hamburger-menu {
 
   
   <div class="status-toggle" id="status-toggle">
-  <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">IN PROGRESS</button>
-  <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">COMPLETED</button>
-  <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">BLOCKED</button>
+  <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
+  <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
+  <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
 </div>
 
 <div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 1rem;">
@@ -489,7 +489,7 @@ nav.hamburger-menu {
 
 <div id="about-section" style="background: black; color: white; padding: 2rem; text-align: left; font-family: system-ui, sans-serif;">
   <p style="margin-bottom: 2rem; white-space: pre-line;">
-    Thanks for supporting our team!
+     Zcash Driven Applications
   </p>
 
   <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
