@@ -823,7 +823,7 @@ fetch('https://zdabe.onrender.com/api/v1/funding-summary')
     })
     .catch(error => {
       console.error('Failed to load card data:', error);
-      cardContainer.innerHTML = '<p>Error loading cards. Please try again later.</p>';
+      cardContainer.innerHTML = '<p>Error loading cards. Hold your horses!</p>';
     });
 });
 
@@ -886,10 +886,10 @@ window.addEventListener("click", function(event) {
 
 const summaryDescriptions = {
   available: "Funds currently available in the wallet.",
-  requested: "Total ZEC that has been requested across all proposals.",
-  received: "Total ZEC received through donations or other contributions.",
-  spent: "Total ZEC that has already been allocated or spent.",
-  earned: "Total ZEC earned through completed work or milestones."
+  requested: "Total $ that has been requested across all proposals.",
+  received: "Total $ received through donations or other contributions.",
+  spent: "Total $ that has already been allocated or spent.",
+  earned: "Total $ earned through completed work or milestones."
 };
 
 function openSummaryModal(type) {
