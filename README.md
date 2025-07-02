@@ -4,7 +4,7 @@ A simple interactive frontend that displays Zcash-related projects from the ZDA 
 
 ## Features
 
-- 🧾 **Dynamic data loading** from the ZDA Funding API (`https://zdafunding-api.onrender.com/api/v1/cards`)
+- 🧾 **Dynamic data loading** from the ZDA Funding API (`https://zdabe.onrender.com/api/v1/cards`)
 - 🎯 **Sort** projects by checkpoints or alphabetically using a custom dropdown
 - 🔍 **Search** projects by **title** and **tags**
 - 💰 **Toggle currency display** between ZEC and USD
@@ -35,10 +35,10 @@ README.md        # This file
 This frontend fetches data from:
 
 
-~~~https://zdafunding-api.onrender-.com/api/v1/cards~~~
+~~~https://zdabe.onrender.com/api/v1/cards~~~
 
 ```
-https://zdafunding-api-mf6k.onrender.com/
+https://zdabe.onrender.com/api/v1/cards
 ```
 
 The response includes:
