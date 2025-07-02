@@ -371,23 +371,37 @@ nav.hamburger-menu {
   padding: 0;
 }
 
+.status-notstarted {
+  background-color: #888;
+  fill-opacity: 0.8;
+}
+
 
 
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>ZDA</h1>
-<input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()" style="padding: 0.3rem 0.5rem; font-size: 1rem; flex: 2; max-width: 250px;" />
-    <nav class="hamburger-menu">
-  <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
-  <div id="hamburger-dropdown" class="hamburger-dropdown">
-    <a href="#about-section">About</a>
-  </div>
-</nav>
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+  <img src="1000034631-removebg-preview.png" alt="logo"
+       style="width: 160px; height: 160px; border-radius: 50%;" />
 
-  </header>
+  <div style="flex: 1; display: flex; justify-content: center;">
+    <input id="search"
+           type="text"
+           placeholder="Search projects by title/tags..."
+           oninput="renderSortedCards()"
+           style="padding: 0.4rem 0.75rem; font-size: 1rem; width: 100%; max-width: 400px; border-radius: 6px; border: 1px solid #ccc;" />
+  </div>
+
+  <nav class="hamburger-menu">
+    <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
+    <div id="hamburger-dropdown" class="hamburger-dropdown">
+      <a href="#about-section">About</a>
+    </div>
+  </nav>
+</header>
+
 
   <p><strong></strong></p>
 
@@ -459,10 +473,12 @@ nav.hamburger-menu {
 
   
   <div class="status-toggle" id="status-toggle">
+  <button data-status="NOT STARTED" onclick="toggleStatusFilter(this)">Not Started</button>
   <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
   <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
   <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
 </div>
+
 
 <div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 1rem;">
   <button onclick="switchSummaryCurrency('USD', this)">USD</button>
@@ -474,14 +490,16 @@ nav.hamburger-menu {
 
 <div id="backlog" class="grid"></div>
 
-  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(); closeQRModal();"></div>
+  <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal" id="details-modal">
     <h2>Details</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
     <button onclick="closeModal()">Close</button>
   </div>
   <div class="qr-modal" id="qr-modal">
-    <img src="qr_placeholder.png" alt="QR Code" class="qr-code">
+    <!-- AFTER -->
+  <img id="qr-img" src="" alt="QR Code" class="qr-code">
+
     <p>placeholder</p>
     <button onclick="closeQRModal()">Close</button>
   </div>
@@ -560,12 +578,21 @@ function toggleStatusFilter(button) {
   html += `<p><strong>Priority:</strong> ${priority}</p>`;
 
   if (milestones.length > 0) {
-    html += `<p><strong>Milestones:</strong></p><ul>`;
-    milestones.forEach(m => {
-      html += `<li>${m.name} ${m.completed ? '✅' : '⏳'}</li>`;
-    });
-    html += `</ul>`;
-  }
+  html += `<p><strong>Milestones:</strong></p><ul>`;
+  milestones.forEach(m => {
+    const statusIcon = m.status === 'COMPLETED' ? '✅' :
+                       m.status === 'IN PROGRESS' ? '⏳' :
+                       '🕓';
+    html += `<li>
+      <strong>${m.name}</strong><br>
+      ${statusIcon} <em>Status:</em> ${m.status} |
+      <em>Stage:</em> ${m.stage} |
+      <em>Target:</em> ${new Date(m.target_date).toLocaleDateString()}
+    </li>`;
+  });
+  html += `</ul>`;
+}
+
 
   modal.querySelector('h2').textContent = title;
   modal.querySelector('p').innerHTML = html;
@@ -583,24 +610,38 @@ function toggleStatusFilter(button) {
   }
 
   function openQRModal(button) {
-  const walletsAttr = button.getAttribute('data-wallets');
+  // Parse wallet list put in data-wallets='[...]' on the button
   let wallets = [];
   try {
-    wallets = JSON.parse(walletsAttr);
+    wallets = JSON.parse(button.getAttribute('data-wallets'));
   } catch (e) {
-    console.error('Invalid wallet_addresses:', walletsAttr);
+    console.error('Invalid wallet_addresses JSON:', e);
   }
 
-  const content = wallets.length
-    ? wallets.map(addr => `<code>${addr}</code>`).join('<br>')
+  // Pick first address (or blank if none)
+  const addr = wallets[0] || '';
+
+  // Build QR-code URL (200 × 200 PNG)
+  const qrSrc = addr
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(addr)}`
+    : '';
+
+  // Swap the image
+  const qrImg = document.getElementById('qr-img');
+  qrImg.src = qrSrc;
+  qrImg.alt = addr ? `QR code for ${addr}` : 'No address';
+
+  // Show the list (or a fallback) under the QR
+  const qrModal = document.getElementById('qr-modal');
+  qrModal.querySelector('p').innerHTML = addr
+    ? `<code>${addr}</code>`
     : '<em>No wallet address available</em>';
 
-  const qrModal = document.getElementById('qr-modal');
-  qrModal.querySelector('p').innerHTML = content;
-
+  // Open modal
   document.getElementById('modal-overlay').style.display = 'block';
   qrModal.style.display = 'block';
 }
+
 
 
 
@@ -620,6 +661,7 @@ function toggleStatusFilter(button) {
     if (status === 'COMPLETED') statusClass = 'status-completed';
     else if (status === 'IN PROGRESS') statusClass = 'status-inprogress';
     else if (status === 'BLOCKED') statusClass = 'status-blocked';
+    else if (status === 'NOT STARTED') statusClass = 'status-notstarted';
 
     return `
       <div class="card">
@@ -733,7 +775,7 @@ function toggleStatusFilter(button) {
   // Fetch data and render on page load
   window.addEventListener('DOMContentLoaded', () => {
 
-fetch('https://zdafunding-api-mf6k.onrender.com/api/v1/funding-summary')
+fetch('https://zdabe.onrender.com/api/v1/funding-summary')
   .then(res => res.json())
   .then(summary => {
     const fields = [
@@ -757,7 +799,7 @@ fetch('https://zdafunding-api-mf6k.onrender.com/api/v1/funding-summary')
 
 
 
-  fetch('https://zdafunding-api-mf6k.onrender.com/api/v1/cards')
+  fetch('https://zdabe.onrender.com/api/v1/cards')
     .then(response => response.json())
     .then(data => {
       newCards = data.cards.map(card => ({
@@ -881,6 +923,13 @@ function closeMilestoneModal() {
   document.getElementById("modal-overlay").style.display = 'none';
   document.getElementById("milestone-modal").style.display = 'none';
 }
+
+document.getElementById('modal-overlay').addEventListener('click', () => {
+  closeModal();
+  closeQRModal();
+  closeSummaryModal();
+  closeMilestoneModal(); // ✅ Add this line
+});
 
 
 </script>
