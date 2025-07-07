@@ -376,6 +376,11 @@ nav.hamburger-menu {
   fill-opacity: 0.8;
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 
   </style>
@@ -460,32 +465,36 @@ nav.hamburger-menu {
 
 
 
-  <div style="margin-bottom: 1rem; margin-left: 30%;">
-  <div class="sort-dropdown" style="position: relative; display: inline-block;">
-  <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
-  <div id="sort-menu" class="dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
-    <div onclick="selectSort('progress-desc')">Checkpoints Reached (High → Low)</div>
-    <div onclick="selectSort('progress-asc')">Checkpoints Reached (Low → High)</div>
-    <div onclick="selectSort('alpha-asc')">Alphabetical (A → Z)</div>
-    <div onclick="selectSort('alpha-desc')">Alphabetical (Z → A)</div>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+  <!-- Sort Dropdown (Left) -->
+  <div class="sort-dropdown" style="position: relative;">
+    <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
+    <div id="sort-menu" class="dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
+      <div onclick="selectSort('progress-desc')">Checkpoints Reached (High → Low)</div>
+      <div onclick="selectSort('progress-asc')">Checkpoints Reached (Low → High)</div>
+      <div onclick="selectSort('alpha-asc')">Alphabetical (A → Z)</div>
+      <div onclick="selectSort('alpha-desc')">Alphabetical (Z → A)</div>
+    </div>
+  </div>
+
+  <!-- Status Toggle (Center) -->
+  <div class="status-toggle" id="status-toggle" style="text-align: center;">
+    <button data-status="NOT STARTED" onclick="toggleStatusFilter(this)">Not Started</button>
+    <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
+    <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
+    <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
+  </div>
+
+  <!-- Currency Toggle (Right) -->
+  <div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 0;">
+    <button onclick="switchSummaryCurrency('USD', this)">USD</button>
+    <button onclick="switchSummaryCurrency('ZEC', this)" class="active">ZEC</button>
   </div>
 </div>
 
-  
-  <div class="status-toggle" id="status-toggle">
-  <button data-status="NOT STARTED" onclick="toggleStatusFilter(this)">Not Started</button>
-  <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
-  <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
-  <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
-</div>
-
-
-<div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 1rem;">
-  <button onclick="switchSummaryCurrency('USD', this)">USD</button>
-  <button onclick="switchSummaryCurrency('ZEC', this)" class="active">ZEC</button>
-</div>
-
-
+<div id="card-loading" style="text-align: center; margin-top: 2rem;">
+  <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #ccc; border-top: 4px solid #000; border-radius: 50%; animation: spin 1s linear infinite; margin: auto;"></div>
+  <p style="color: #777;">Loading cards...</p>
 </div>
 
 <div id="backlog" class="grid"></div>
@@ -505,7 +514,7 @@ nav.hamburger-menu {
   </div>
 
 
-<div id="about-section" style="background: black; color: white; padding: 2rem; text-align: left; font-family: system-ui, sans-serif;">
+<div id="about-section" style="background: black; color: white; padding-bottom: 2rem; text-align: left; font-family: system-ui, sans-serif;">
   <p style="margin-bottom: 2rem; white-space: pre-line;">
      Zcash Driven Applications
   </p>
@@ -799,33 +808,57 @@ fetch('https://zdabe.onrender.com/api/v1/funding-summary')
 
 
 
-  fetch('https://zdabe.onrender.com/api/v1/cards')
-    .then(response => response.json())
-    .then(data => {
-      newCards = data.cards.map(card => ({
-        id: card.id,
-        title: card.title,
-        date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-        contributors: card.contributors || 0,
-        raised: parseFloat(card.funding_received),
-        target: parseFloat(card.funding_requested),
-        progress: parseFloat(card.percent_funded),
-        creators: (card.creators || []).join(" & "),
-        status: card.status || "IN PROGRESS",
-        wallet_addresses: card.wallet_addresses || [],
-        description: card.description || '',
-        tags: card.tags || [],
-        priority: card.priority || 'N/A',
-        milestones: card.milestones || []
+  document.getElementById('card-loading').style.display = 'block';
+document.getElementById('backlog').style.display = 'none';
 
-      }));
-      renderSortedCards();
-    })
-    .catch(error => {
-      console.error('Failed to load card data:', error);
-      cardContainer.innerHTML = '<p>Error loading cards. Hold your horses!</p>';
-    });
-});
+  fetch('https://zdabe.onrender.com/api/v1/cards')
+  .then(response => response.json())
+  .then(data => {
+    const cardSummaries = data.cards || [];
+
+    return Promise.all(
+      cardSummaries.map(card =>
+        fetch(`https://zdabe.onrender.com/api/v1/cards/${card.id}`)
+          .then(res => res.json())
+          .catch(err => {
+            console.error(`Failed to load card ${card.id}:`, err);
+            return null;
+          })
+      )
+    );
+  })
+  .then(fullCards => {
+    newCards = fullCards
+      .filter(card => card !== null)
+      .map(card => {
+        const wallet = card.wallet_info?.totals || {};
+        const received = parseFloat(wallet.total_received || 0);
+        const requested = parseFloat(card.funding_requested || 0);
+        const progress = requested > 0 ? (100 * received / requested).toFixed(2) : 0;
+
+        return {
+          id: card.id,
+          title: card.title,
+          date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          contributors: card.contributors || 0,
+          raised: received,
+          target: requested,
+          progress: parseFloat(progress),
+          creators: (card.creators || []).join(" & "),
+          status: card.status || "IN PROGRESS",
+          wallet_addresses: (card.wallet_info?.addresses || []).map(w => w.address),
+          description: card.description || '',
+          tags: card.tags || [],
+          priority: card.priority || 'N/A',
+          milestones: card.milestones || []
+        };
+      });
+
+    document.getElementById('card-loading').style.display = 'none';
+  document.getElementById('backlog').style.display = 'grid';
+    renderSortedCards();
+  });
+  })
 
 let currentSort = 'progress-desc';
 
