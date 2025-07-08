@@ -547,7 +547,21 @@ function toggleStatusFilter(button) {
   renderSortedCards();
 }
 
-  const zecToUsd = 44.85;
+  let zecToUsd = 0; // Will be set from API
+
+function fetchExchangeRate() {
+  return fetch('https://zdabe.onrender.com/api/v1/exchange-rate')
+    .then(res => res.json())
+    .then(data => {
+      zecToUsd = parseFloat(data.zec_to_usd);
+      console.log('ZEC to USD exchange rate:', zecToUsd);
+    })
+    .catch(err => {
+      console.error('Failed to fetch exchange rate:', err);
+      zecToUsd = 44.85; // fallback
+    });
+}
+
   const cardContainer = document.getElementById('backlog');
   let newCards = [];
 
@@ -690,8 +704,8 @@ function toggleStatusFilter(button) {
         
 
         <p id="${id}"><strong>Raised ${raised} of ${target} ZEC</strong></p>
-        <div class="progress-bar" data-progress="${progress}">
-          <div class="progress" style="width: ${progress}%;"></div> 
+        <div class="progress-bar" data-progress="${70}">
+          <div class="progress" style="width: ${70}%;"></div> 
           <div class="checkpoint" style="left: 0%;" data-milestone="Analyze" onclick="showMilestoneInfo('Analyze')"></div>
 
           <div class="checkpoint-label" style="left: 1%">
@@ -783,7 +797,7 @@ function toggleStatusFilter(button) {
 
   // Fetch data and render on page load
   window.addEventListener('DOMContentLoaded', () => {
-
+fetchExchangeRate().then(() => {
 fetch('https://zdabe.onrender.com/api/v1/funding-summary')
   .then(res => res.json())
   .then(summary => {
@@ -857,6 +871,7 @@ document.getElementById('backlog').style.display = 'none';
     document.getElementById('card-loading').style.display = 'none';
   document.getElementById('backlog').style.display = 'grid';
     renderSortedCards();
+  });
   });
   })
 
