@@ -643,7 +643,7 @@ function fetchExchangeRate() {
   }
 
   // Pick first address (or blank if none)
-  const addr = wallets[0] || '';
+  const addr = wallets;
 
   // Build QR-code URL (200 × 200 PNG)
   const qrSrc = addr
@@ -797,6 +797,7 @@ function fetchExchangeRate() {
 
 
   // Fetch data and render on page load
+  /*
   window.addEventListener('DOMContentLoaded', () => {
 fetchExchangeRate().then(() => {
 fetch('https://zdabe.onrender.com/api/v1/funding-summary')
@@ -874,7 +875,7 @@ document.getElementById('backlog').style.display = 'none';
     renderSortedCards();
   });
   });
-  })
+  })*/
 
 let currentSort = 'progress-desc';
 
@@ -1013,7 +1014,7 @@ const { data: walletInfo } = await supabase
       console.error('Supabase error:', error);
     } else {
       console.log('Fetched data:', cards);
-      console.log('Fetched data2:', walletInfo);
+      console.log('Fetched wallets:', walletInfo);
       // Call render function or process data
     }
     let total_earned = 0;
@@ -1021,15 +1022,16 @@ const { data: walletInfo } = await supabase
     let total_requested = 0;
     let total_received = 0;
     let total_available = 0;
-
+    var b = 0;
     for (const card of cards) {
       const totals = card.wallet_info?.totals || {};
 
       total_earned += parseFloat(card.funding_earned ?? 0);
-      total_spent += parseFloat(card.funding_spent ?? 0);
+      total_spent += parseFloat(walletInfo[b]?.total_sent || 0);
       total_requested += parseFloat(card.funding_requested ?? 0);
-      total_received += parseFloat(totals.total_received ?? 0);
-      total_available += parseFloat(totals.balance ?? 0);
+      total_received += walletInfo[b]?.total_received || 0;
+      total_available += walletInfo[b]?.balance || 0;
+      b++;
     }
 
     // 🟢 You can now use these values to update the summary
@@ -1053,8 +1055,40 @@ const { data: walletInfo } = await supabase
     document.getElementById("total-requested-usd").textContent = `$${(total_requested * zecToUsd).toFixed(2)} USD`;
     document.getElementById("total-received-usd").textContent = `$${(total_received * zecToUsd).toFixed(2)} USD`;
     document.getElementById("balance-usd").textContent = `$${(total_available * zecToUsd).toFixed(2)} USD`;
+  var a = 0;
+    newCards = cards.map(card => {
+  const wallet = card.wallet_info?.totals || {};
+  const received = walletInfo[a].total_received || 0;
+  //console.log('Received for card', card.id, walletInfo[a].balance);
+  const requested = parseFloat(card.funding_requested || 0);
+  const progress = requested > 0 ? (100 * received / requested).toFixed(2) : 0;
   
+//console.log('Wallets for card', card.id, (card.wallet_addresses[0] ));
+      a++;
+  return {
+    id: card.id,
+    title: card.title,
+    date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    contributors: card.contributors || 0,
+    raised: received,
+    target: requested,
+    progress: parseFloat(progress),
+    creators: (card.creators || []).join(" & "),
+    status: card.status || "IN PROGRESS",
+    wallet_addresses: card.wallet_addresses[0],
+    description: card.description || '',
+    tags: card.tags || [],
+    priority: card.priority || 'N/A',
+    milestones: card.milestones || []
+  };
+});
+
+document.getElementById('card-loading').style.display = 'none';
+document.getElementById('backlog').style.display = 'grid';
+renderSortedCards();
   }
+
+  
 
   // Fetch when DOM is ready
   document.addEventListener('DOMContentLoaded', fetchAllData);
