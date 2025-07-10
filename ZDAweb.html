@@ -1027,7 +1027,11 @@ const { data: walletInfo } = await supabase
       const totals = card.wallet_info?.totals || {};
 
       total_earned += parseFloat(card.funding_earned ?? 0);
-      total_spent += parseFloat(walletInfo[b]?.total_sent || 0);
+      if( walletInfo[b].total_sent != "NaN" && walletInfo[b].total_sent != undefined) {
+        total_spent += walletInfo[b].total_sent;
+      } else {
+        total_spent += 0;
+      }
       total_requested += parseFloat(card.funding_requested ?? 0);
       total_received += walletInfo[b]?.total_received || 0;
       total_available += walletInfo[b]?.balance || 0;
