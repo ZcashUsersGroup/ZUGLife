@@ -551,17 +551,23 @@ function toggleStatusFilter(button) {
   let zecToUsd = 0; // Will be set from API
 
 function fetchExchangeRate() {
-  return fetch('https://zdabe.onrender.com/api/v1/exchange-rate')
+  return fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=usd')
     .then(res => res.json())
     .then(data => {
-      zecToUsd = parseFloat(data.zec_to_usd);
+      zecToUsd = parseFloat(data.zcash.usd);
+      document.body.dataset.zecToUsd = zecToUsd;
       console.log('ZEC to USD exchange rate:', zecToUsd);
     })
     .catch(err => {
       console.error('Failed to fetch exchange rate:', err);
       zecToUsd = 44.85; // fallback
+      document.body.dataset.zecToUsd = zecToUsd;
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetchExchangeRate().then(fetchAllData);
+});
 
   const cardContainer = document.getElementById('backlog');
   let newCards = [];
@@ -908,7 +914,7 @@ function switchSummaryCurrency(to, clickedButton) {
   newCards.forEach(card => {
     if (to === 'USD') {
       switchToUSD(card.id, card.raised, card.target);
-    } else {
+      } else {
       switchToZEC(card.id, card.raised, card.target);
     }
   });
@@ -1013,8 +1019,8 @@ const { data: walletInfo } = await supabase
     if (error) {
       console.error('Supabase error:', error);
     } else {
-      console.log('Fetched data:', cards);
-      console.log('Fetched wallets:', walletInfo);
+      /*console.log('Fetched data:', cards);
+      console.log('Fetched wallets:', walletInfo);*/
       // Call render function or process data
     }
     let total_earned = 0;
@@ -1039,13 +1045,13 @@ const { data: walletInfo } = await supabase
     }
 
     // 🟢 You can now use these values to update the summary
-    console.log({
+    /*console.log({
       total_earned,
       total_spent,
       total_requested,
       total_received,
       total_available
-    });
+    });*/
     document.getElementById("total-earned-zec").textContent = `${total_earned.toFixed(3)} ZEC`;
     document.getElementById("total-spent-zec").textContent = `${total_spent.toFixed(3)} ZEC`;
     document.getElementById("total-requested-zec").textContent = `${total_requested.toFixed(3)} ZEC`;
