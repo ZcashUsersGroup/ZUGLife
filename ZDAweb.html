@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>ZDA</title>
   <style>
     body {
@@ -980,11 +981,90 @@ document.getElementById('modal-overlay').addEventListener('click', () => {
 });
 
 
+
 </script>
 
 <footer class="site-footer">
   <p>Jax was here</p>
 </footer>
+
+<!-- 1. Load Supabase from CDN FIRST -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<!-- 2. Your script goes AFTER the CDN has loaded -->
+<script>
+  // Initialize Supabase client
+  const supabaseUrl = 'https://shxxgatskiyiqypapjcd.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoeHhnYXRza2l5aXF5cGFwamNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MjIzMzIsImV4cCI6MjA2NjE5ODMzMn0.5Z6Ro7Cgtxf4tuq4H-zYXe6TUnQjl7_S52K02gB4cIY';
+
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+  async function fetchAllData() {
+    const { data: cards, error } = await supabase
+  .from('cards')
+  .select('*')
+  .eq('visibility', 'PUBLIC')
+const { data: walletInfo } = await supabase
+  .from('wallet_info')
+  .select('*')
+      
+
+    if (error) {
+      console.error('Supabase error:', error);
+    } else {
+      console.log('Fetched data:', cards);
+      console.log('Fetched data2:', walletInfo);
+      // Call render function or process data
+    }
+    let total_earned = 0;
+    let total_spent = 0;
+    let total_requested = 0;
+    let total_received = 0;
+    let total_available = 0;
+
+    for (const card of cards) {
+      const totals = card.wallet_info?.totals || {};
+
+      total_earned += parseFloat(card.funding_earned ?? 0);
+      total_spent += parseFloat(card.funding_spent ?? 0);
+      total_requested += parseFloat(card.funding_requested ?? 0);
+      total_received += parseFloat(totals.total_received ?? 0);
+      total_available += parseFloat(totals.balance ?? 0);
+    }
+
+    // 🟢 You can now use these values to update the summary
+    console.log({
+      total_earned,
+      total_spent,
+      total_requested,
+      total_received,
+      total_available
+    });
+    document.getElementById("total-earned-zec").textContent = `${total_earned.toFixed(3)} ZEC`;
+    document.getElementById("total-spent-zec").textContent = `${total_spent.toFixed(3)} ZEC`;
+    document.getElementById("total-requested-zec").textContent = `${total_requested.toFixed(3)} ZEC`;
+    document.getElementById("total-received-zec").textContent = `${total_received.toFixed(3)} ZEC`;
+    document.getElementById("balance-zec").textContent = `${total_available.toFixed(3)} ZEC`;
+
+    // USD versions
+    const zecToUsd = parseFloat(document.body.dataset.zecToUsd || 44.85);
+    document.getElementById("total-earned-usd").textContent = `$${(total_earned * zecToUsd).toFixed(2)} USD`;
+    document.getElementById("total-spent-usd").textContent = `$${(total_spent * zecToUsd).toFixed(2)} USD`;
+    document.getElementById("total-requested-usd").textContent = `$${(total_requested * zecToUsd).toFixed(2)} USD`;
+    document.getElementById("total-received-usd").textContent = `$${(total_received * zecToUsd).toFixed(2)} USD`;
+    document.getElementById("balance-usd").textContent = `$${(total_available * zecToUsd).toFixed(2)} USD`;
+  
+  }
+
+  // Fetch when DOM is ready
+  document.addEventListener('DOMContentLoaded', fetchAllData);
+
+
+
+  
+</script>
+
+
 
 </body>
 </html>
