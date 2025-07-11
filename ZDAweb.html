@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>ZDA</title>
   <style>
     body {
@@ -14,30 +13,35 @@
       margin-left: 1rem;
       padding: 0rem;
       background: #f9f9fc;
-      color: #111;
+      color: #283748;
       min-height: 100vh;
       overflow-x: hidden;
     }
+
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     nav a {
       margin-left: 0rem;
-      color: #000;
+      color: #283748;
       text-decoration: none;
       font-weight: 500;
     }
+
     h1 {
       color: #234;
     }
+
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
       margin-top: 2rem;
     }
+
     .card {
       background: white;
       padding: 1.5rem;
@@ -46,8 +50,9 @@
       margin-bottom: 1rem;
       position: relative;
     }
+
     .contribute-button {
-      background: #000;
+      background: #283748;
       border: none;
       color: white;
       padding: 0.75rem 1.5rem;
@@ -55,6 +60,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .menu-button {
       position: absolute;
       top: 1rem;
@@ -64,7 +70,9 @@
       font-size: 1.2rem;
       cursor: pointer;
     }
-    .modal, .qr-modal {
+
+    .modal,
+    .qr-modal {
       display: none;
       position: fixed;
       top: 50%;
@@ -78,6 +86,7 @@
       max-width: 90%;
       text-align: center;
     }
+
     .modal-overlay {
       display: none;
       position: fixed;
@@ -88,17 +97,21 @@
       background: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
+
     .qr-code {
       width: 200px;
       height: 200px;
       margin-bottom: 1rem;
     }
+
     ul {
       padding-left: 1.2rem;
     }
+
     ul li {
       margin-bottom: 0.5rem;
     }
+
     .progress-bar {
       background: #eee;
       border-radius: 10px;
@@ -106,6 +119,7 @@
       margin-top: 0.5rem;
       position: relative;
     }
+
     .progress {
       background: #808080;
       height: 100%;
@@ -114,6 +128,7 @@
       position: relative;
       z-index: 1;
     }
+
     .checkpoint {
       position: absolute;
       top: 0px;
@@ -125,10 +140,12 @@
       transform: translateX(-00%);
       z-index: 2;
     }
+
     .checkpoint.filled {
-      background-color: #000;
+      background-color: #283748;
       border-color: #aaa;
     }
+
     .checkpoint-label {
       position: absolute;
       top: 20px;
@@ -137,368 +154,365 @@
       transform: translateX(-50%);
       white-space: nowrap;
     }
+
     #about-section {
-  background-color: #000;
-  color: #fff;
-  margin: 2rem -2rem; /* Negative margin cancels body padding */
-  padding: 2rem;
-  margin-bottom: 0; /* No bottom margin to avoid gap */
-  width: calc(100% + 4rem); /* Stretch back to full width */
-}
+      background-color: #283748;
+      color: #fff;
+      margin: 2rem -2rem;
+      /* Negative margin cancels body padding */
+      padding: 2rem;
+      margin-bottom: 0;
+      /* No bottom margin to avoid gap */
+      width: calc(100% + 4rem);
+      /* Stretch back to full width */
+    }
 
-#about-section h2,
-#about-section p,
-#about-section ul,
-#about-section li,
-#about-section a {
-  color: #fff;
-}
+    #about-section h2,
+    #about-section p,
+    #about-section ul,
+    #about-section li,
+    #about-section a {
+      color: #fff;
+    }
 
-#about-section a {
-  text-decoration: underline;
-  color: #000;
-}
-.site-footer {
-  background-color: #000;
-  color: #000;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 0rem;
-  margin: 0rem -2rem;
-  width: calc(100% + 4rem);
-  margin-bottom: 0;
-  font-size: 0.9rem;
-}
-.status-badge {
-  position: absolute;
-  top: 1rem;
-  right: 3rem; /* leave space next to ⋯ button */
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: white;
-}
+    #about-section a {
+      text-decoration: underline;
+      color: #283748;
+    }
 
-.status-completed {
-  background-color: #28a745;
-  fill-opacity: 0.8;
-}
+    .site-footer {
+      background-color: #283748;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 0rem;
+      margin: 0rem -2rem;
+      width: calc(100% + 4rem);
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
 
-.status-inprogress {
-  background-color: #FDDA0D;
-  fill-opacity: 0.8;
-}
+    .status-badge {
+      position: absolute;
+      top: 1rem;
+      right: 3rem;
+      /* leave space next to ⋯ button */
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: white;
+    }
 
-.status-blocked {
-  background-color: #dc3545;
-  fill-opacity: 0.8;
-}
+    .status-completed {
+      background-color: #28a745;
+      fill-opacity: 0.8;
+    }
 
-.currency-toggle {
-  display: inline-flex;
-  border-radius: 12px;
-  overflow: hidden;
-  margin: 0.5rem 0;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
+    .status-inprogress {
+      background-color: #FDDA0D;
+      fill-opacity: 0.8;
+    }
 
-.currency-toggle button {
-  background: none;
-  border: none;
-  padding: 0.5rem 1.2rem;
-  cursor: pointer;
-  font-weight: bold;
-  color: #555;
-  transition: background 0.3s, color 0.3s;
-}
+    .status-blocked {
+      background-color: #dc3545;
+      fill-opacity: 0.8;
+    }
 
-.currency-toggle button.active {
-  background: #000;
-  color: white;
-}
+    .currency-toggle {
+      display: inline-flex;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
 
+    .currency-toggle button {
+      background: none;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: #555;
+      transition: background 0.3s, color 0.3s;
+    }
 
-.sort-button {
-  background: white;
-  border: none;
-  color: #000;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-}
+    .currency-toggle button.active {
+      background: #283748;
+      color: white;
+    }
 
-.dropdown-menu div {
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-}
+    .sort-button {
+      background: white;
+      border: none;
+      color: #283748;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-.dropdown-menu div:hover {
-  background-color: #eee;
-}
+    .dropdown-menu div {
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+    }
 
-.stats-box {
-  border: 2px solid #f9f9fc;
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 2rem 0;
-  background: #f9f9fc;
-}
+    .dropdown-menu div:hover {
+      background-color: #eee;
+    }
 
-.stats-inner {
-  display: flex;
-  justify-content: space-around;
-  font-family: sans-serif;
-  text-align: center;
-}
+    .stats-box {
+      border: 2px solid #f9f9fc;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 2rem 0;
+      background: #f9f9fc;
+    }
 
-.stats-inner > div {
-  flex: 1;
-  border-right: 1px solid #ccc;
-  padding: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
+    .stats-inner {
+      display: flex;
+      justify-content: space-around;
+      font-family: sans-serif;
+      text-align: center;
+    }
 
-.stats-inner > div:hover {
-  background-color: #f0f0f0;
-}
+    .stats-inner>div {
+      flex: 1;
+      border-right: 1px solid #ccc;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
 
+    .stats-inner>div:hover {
+      background-color: #f0f0f0;
+    }
 
-.stats-inner > div:last-child {
-  border-right: none;
-}
+    .stats-inner>div:last-child {
+      border-right: none;
+    }
 
-#status-filter {
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+    #status-filter {
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-.status-toggle {
-  display: inline-flex;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  margin: 0.5rem 0;
-}
+    .status-toggle {
+      display: inline-flex;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      margin: 0.5rem 0;
+    }
 
-.status-toggle button {
-  padding: 0.4rem 1.2rem;
-  background: none;
-  border: none;
-  font-weight: bold;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: #555;
-  transition: background 0.2s, color 0.2s;
-}
+    .status-toggle button {
+      padding: 0.4rem 1.2rem;
+      background: none;
+      border: none;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #555;
+      transition: background 0.2s, color 0.2s;
+    }
 
-.status-toggle button.active {
-  background: #000;
-  color: white;
-}
+    .status-toggle button.active {
+      background: #283748;
+      color: white;
+    }
 
+    .hamburger-menu {
+      position: relative;
+    }
 
-.hamburger-menu {
-  position: relative;
-}
+    .hamburger-icon {
+      font-size: 1.5rem;
+      background: none;
+      color: #283748;
+      border: none;
+      cursor: pointer;
+    }
 
-.hamburger-icon {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
+    .hamburger-dropdown {
+      display: none;
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      min-width: 140px;
+      overflow: hidden;
+      /* Ensures child doesn't overflow corners */
+      padding: 0;
+      /* Avoid interior white gap */
+    }
 
-.hamburger-dropdown {
-  display: none;
-  position: absolute;
-  top: 2.5rem;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  min-width: 140px;
-  overflow: hidden;  /* Ensures child doesn't overflow corners */
-  padding: 0;         /* Avoid interior white gap */}
+    .hamburger-dropdown a {
+      display: block;
+      width: 120%;
+      /* Fill the dropdown */
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: #283748;
+      font-weight: 500;
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+      box-sizing: border-box;
+    }
 
-.hamburger-dropdown a {
-  display: block;
-  width: 120%;        /* Fill the dropdown */
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-  background-color: transparent;
-  transition: background-color 0.2s ease;
-  box-sizing: border-box;
-}
+    .hamburger-dropdown a:hover {
+      background-color: #eee;
+    }
 
-.hamburger-dropdown a:hover {
-  background-color: #eee;
-}
+    .milestone-label {
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
 
+    .milestone-label:hover {
+      background-color: #ddd;
+    }
 
+    .checkpoint {
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
 
+    .checkpoint:hover {
+      background-color: #ccc;
+      border-color: #555;
+    }
 
-.milestone-label {
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
+    nav.hamburger-menu {
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
 
-.milestone-label:hover {
-  background-color: #ddd;
-}
+    .status-notstarted {
+      background-color: #888;
+      fill-opacity: 0.8;
+    }
 
-.checkpoint {
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-}
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
 
-.checkpoint:hover {
-  background-color: #ccc;
-  border-color: #555;
-}
-
-nav.hamburger-menu {
-  position: relative;
-  margin: 0;
-  padding: 0;
-}
-
-.status-notstarted {
-  background-color: #888;
-  fill-opacity: 0.8;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-
-
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
 <body>
   <header style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-  <img src="1000034631-removebg-preview.png" alt="logo"
-       style="width: 160px; height: 160px; border-radius: 50%;" />
+    <img src="1000034631-removebg-preview.png" alt="logo" style="width: 160px; height: 160px; border-radius: 50%;" />
 
-  <div style="flex: 1; display: flex; justify-content: center;">
-    <input id="search"
-           type="text"
-           placeholder="Search projects by title/tags..."
-           oninput="renderSortedCards()"
-           style="padding: 0.4rem 0.75rem; font-size: 1rem; width: 100%; max-width: 400px; border-radius: 6px; border: 1px solid #ccc;" />
-  </div>
-
-  <nav class="hamburger-menu">
-    <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
-    <div id="hamburger-dropdown" class="hamburger-dropdown">
-      <a href="#about-section">About</a>
+    <div style="flex: 1; display: flex; justify-content: center;">
+      <input id="search" type="text" placeholder="Search projects by title/tags..." oninput="renderSortedCards()"
+        style="padding: 0.4rem 0.75rem; font-size: 1rem; width: 100%; max-width: 400px; border-radius: 6px; border: 1px solid #ccc;" />
     </div>
-  </nav>
-</header>
 
-
+    <nav class="hamburger-menu">
+      <button onclick="toggleHamburger()" class="hamburger-icon">☰</button>
+      <div id="hamburger-dropdown" class="hamburger-dropdown">
+        <a href="#about-section">About</a>
+      </div>
+    </nav>
+  </header>
   <p><strong></strong></p>
-
-
   <div class="stats-box">
-  <div class="stats-inner">
-    <div onclick="openSummaryModal('available')">
-  <div style="font-size: 0.9rem; color: #555;">Available</div>
-  <div id="balance-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  <div id="balance-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-</div>
+    <div class="stats-inner">
+      <div onclick="openSummaryModal('available')">
+        <div style="font-size: 0.9rem; color: #555;">Available</div>
+        <div id="balance-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+        <div id="balance-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+      </div>
 
-    <div onclick="openSummaryModal('requested')">
-  <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
-      <div id="total-requested-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-      <div id="total-requested-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  
+      <div onclick="openSummaryModal('requested')">
+        <div style="font-size: 0.9rem; color: #555;">Total Requested</div>
+        <div id="total-requested-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+        <div id="total-requested-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+
+      </div>
+      <div onclick="openSummaryModal('received')">
+        <div style="font-size: 0.9rem; color: #555;">Total Received</div>
+        <div id="total-received-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+        <div id="total-received-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+
+      </div>
+      <div onclick="openSummaryModal('spent')">
+        <div style="font-size: 0.9rem; color: #555;">Total Spent</div>
+        <div id="total-spent-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+        <div id="total-spent-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+
+      </div>
+      <div onclick="openSummaryModal('earned')">
+        <div style="font-size: 0.9rem; color: #555;">Total Earned</div>
+        <div id="total-earned-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
+        <div id="total-earned-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
+
+      </div>
     </div>
-    <div onclick="openSummaryModal('received')">
-      <div style="font-size: 0.9rem; color: #555;">Total Received</div>
-      <div id="total-received-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-      <div id="total-received-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  
+
+    <div class="modal" id="summary-modal">
+      <h2 id="summary-title">Summary</h2>
+      <p id="summary-description">Loading...</p>
+      <button onclick="closeSummaryModal()">Close</button>
     </div>
-    <div onclick="openSummaryModal('spent')">
-      <div style="font-size: 0.9rem; color: #555;">Total Spent</div>
-      <div id="total-spent-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-      <div id="total-spent-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  
+
+    <div class="modal" id="milestone-modal">
+      <h2 id="milestone-title">Milestone</h2>
+      <p id="milestone-description">Loading...</p>
+      <button onclick="closeMilestoneModal()">Close</button>
     </div>
-   <div onclick="openSummaryModal('earned')">
-      <div style="font-size: 0.9rem; color: #555;">Total Earned</div>
-      <div id="total-earned-zec" style="font-size: 1.2rem; font-weight: bold;">Loading...</div>
-      <div id="total-earned-usd" style="display: none; font-size: 1.2rem; font-weight: bold;">Loading...</div>
-  
-    </div>
+
   </div>
-
-  <div class="modal" id="summary-modal">
-  <h2 id="summary-title">Summary</h2>
-  <p id="summary-description">Loading...</p>
-  <button onclick="closeSummaryModal()">Close</button>
-</div>
-
-<div class="modal" id="milestone-modal">
-  <h2 id="milestone-title">Milestone</h2>
-  <p id="milestone-description">Loading...</p>
-  <button onclick="closeMilestoneModal()">Close</button>
-</div>
-
-
-</div>
-
-
-
-
-
 
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-  <!-- Sort Dropdown (Left) -->
-  <div class="sort-dropdown" style="position: relative;">
-    <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
-    <div id="sort-menu" class="dropdown-menu" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
-      <div onclick="selectSort('progress-desc')">Checkpoints Reached (High → Low)</div>
-      <div onclick="selectSort('progress-asc')">Checkpoints Reached (Low → High)</div>
-      <div onclick="selectSort('alpha-asc')">Alphabetical (A → Z)</div>
-      <div onclick="selectSort('alpha-desc')">Alphabetical (Z → A)</div>
+    <!-- Sort Dropdown (Left) -->
+    <div class="sort-dropdown" style="position: relative;">
+      <button onclick="toggleSortMenu()" class="sort-button">⇅ Sort</button>
+      <div id="sort-menu" class="dropdown-menu"
+        style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;">
+        <div onclick="selectSort('progress-desc')">Checkpoints Reached (High → Low)</div>
+        <div onclick="selectSort('progress-asc')">Checkpoints Reached (Low → High)</div>
+        <div onclick="selectSort('alpha-asc')">Alphabetical (A → Z)</div>
+        <div onclick="selectSort('alpha-desc')">Alphabetical (Z → A)</div>
+      </div>
+    </div>
+
+    <!-- Status Toggle (Center) -->
+    <div class="status-toggle" id="status-toggle" style="text-align: center;">
+      <button data-status="NOT STARTED" onclick="toggleStatusFilter(this)">Not Started</button>
+      <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
+      <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
+      <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
+    </div>
+
+    <!-- Currency Toggle (Right) -->
+    <div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 0;">
+      <button onclick="switchSummaryCurrency('USD', this)">USD</button>
+      <button onclick="switchSummaryCurrency('ZEC', this)" class="active">ZEC</button>
     </div>
   </div>
 
-  <!-- Status Toggle (Center) -->
-  <div class="status-toggle" id="status-toggle" style="text-align: center;">
-    <button data-status="NOT STARTED" onclick="toggleStatusFilter(this)">Not Started</button>
-    <button data-status="IN PROGRESS" onclick="toggleStatusFilter(this)">In Progress</button>
-    <button data-status="COMPLETED" onclick="toggleStatusFilter(this)">Completed</button>
-    <button data-status="BLOCKED" onclick="toggleStatusFilter(this)">Blocked</button>
+  <div id="card-loading" style="text-align: center; margin-top: 2rem;">
+    <div class="spinner"
+      style="width: 40px; height: 40px; border: 4px solid #ccc; border-top: 4px solid #000; border-radius: 50%; animation: spin 1s linear infinite; margin: auto;">
+    </div>
+    <p style="color: #777;">Loading cards...</p>
   </div>
 
-  <!-- Currency Toggle (Right) -->
-  <div class="currency-toggle" id="summary-currency-toggle" style="margin-bottom: 0;">
-    <button onclick="switchSummaryCurrency('USD', this)">USD</button>
-    <button onclick="switchSummaryCurrency('ZEC', this)" class="active">ZEC</button>
-  </div>
-</div>
-
-<div id="card-loading" style="text-align: center; margin-top: 2rem;">
-  <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #ccc; border-top: 4px solid #000; border-radius: 50%; animation: spin 1s linear infinite; margin: auto;"></div>
-  <p style="color: #777;">Loading cards...</p>
-</div>
-
-<div id="backlog" class="grid"></div>
+  <div id="backlog" class="grid"></div>
 
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal" id="details-modal">
@@ -508,192 +522,206 @@ nav.hamburger-menu {
   </div>
   <div class="qr-modal" id="qr-modal">
     <!-- AFTER -->
-  <img id="qr-img" src="" alt="QR Code" class="qr-code">
+    <img id="qr-img" src="" alt="QR Code" class="qr-code">
 
     <p>placeholder</p>
     <button onclick="closeQRModal()">Close</button>
   </div>
 
+  <div id="about-section"
+    style="background: #283748; color: white; padding-bottom: 2rem; text-align: left; font-family: system-ui, sans-serif;">
+    <p style="margin-bottom: 2rem; white-space: pre-line;">
+      <strong><h2>What we do</h2></strong>
+We are a team of developers funded with ZEC by the community to build applications that support the Zcash ecosystem.
 
-<div id="about-section" style="background: black; color: white; padding-bottom: 2rem; text-align: left; font-family: system-ui, sans-serif;">
-  <p style="margin-bottom: 2rem; white-space: pre-line;">
-     Zcash Driven Applications
-  </p>
+Each app is assigned a shielded (z) address. <br>A view key is provided so anyone can see what the app earns.
 
-  <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
-    <div style="width: 200px; height: 200px; border: 2px solid white; display: flex; align-items: center; justify-content: center; text-align: center; position: relative;">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=t1MkgrZASAJbtNzEagDtUbapFKiS7sNQihm" alt="QR Code" style="width: 200px; height: 200px;" />
+A portion of each app's earnings is routed back to a general developer fund, <br>which is used to support ongoing development across the ecosystem.
+
+<strong><h2>How it works</h2></strong>
+Transparency is central to our mission. We demonstrate this by building apps that generate revenue transparently and return a share to fund more development.
+
+<br>We start with nearly zero ZEC every time. Each grant uses a transparent (t) address for collecting funds.
+
+We also maintain a central t address for the general developer fund. <br>These addresses make all inflows and outflows fully visible and traceable.
+
+Funds are used exclusively to pay developers. If any funding is needed beyond that purpose, we issue a separate grant.<br>
+
+All developer payouts are shielded by default. Incoming transparent funds are automatically shielded (t to z) to maintain user and developer anonymity.
+
+<br>All earnings percentages and developer payouts are logged on-chain and can be viewed via project view keys.
+
+<strong><h2>Coming Soon</h2></strong>
+We plan to enable contributors to share in the earnings of the apps they fund. This feature is under active development and will launch when the required components are ready.
+
+<strong><h2>Contact Us</h2></strong>
+u1qtt59kdhca9vtsshqwl6gu47m3camcet0v56a8x6ruwqeyfa0degeppd2wvsd723tmshhd52e3u45vtda0te40u69w63stda68rn6rfwyk4l5t4vsktjl9a4kgf3lpj8u46hcrgz4d3pmf3dqn76p77kjs3ukr4j025zu6ahj8hjf5a2x6u9gv5wrmm3w68pytrnc2kj3453vvmudts
+    </p>
+
+    <div style="display: flex; justify-content: center; align-items: center; margin: 2rem 0;">
+      <div
+        style="width: 200px; height: 200px; border: 2px solid white; display: flex; align-items: center; justify-content: center; text-align: center; position: relative;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=283748&data=t1MkgrZASAJbtNzEagDtUbapFKiS7sNQihm"
+          alt="QR Code" style="width: 200px; height: 200px; color: #283748" />
+      </div>
     </div>
+
+    <p style="text-align: center; font-style: italic; margin-top: -1rem;">ZDA GENERAL FUND</p>
+    <p style="text-align: right; margin-right: 5rem; margin-top: 3rem;">© 2025 ZDA. All rights reserved.</p>
   </div>
-
-  <p style="text-align: center; font-style: italic; margin-top: -1rem;">ZDA GENERAL FUND</p>
-
-  <p style="text-align: right; margin-right: 5rem; margin-top: 3rem;">© 2025 ZDA. All rights reserved.</p>
-</div>
-
-
-
   <script>
     let activeStatuses = [];
-function toggleStatusFilter(button) {
-  const status = button.getAttribute('data-status');
-  const index = activeStatuses.indexOf(status);
-  if (index === -1) {
-    activeStatuses.push(status);
-    button.classList.add('active');
-  } else {
-    activeStatuses.splice(index, 1);
-    button.classList.remove('active');
-  }
-  renderSortedCards();
-}
+    function toggleStatusFilter(button) {
+      const status = button.getAttribute('data-status');
+      const index = activeStatuses.indexOf(status);
+      if (index === -1) {
+        activeStatuses.push(status);
+        button.classList.add('active');
+      } else {
+        activeStatuses.splice(index, 1);
+        button.classList.remove('active');
+      }
+      renderSortedCards();
+    }
 
-  let zecToUsd = 0; // Will be set from API
+    let zecToUsd = 0; // Will be set from API
 
-function fetchExchangeRate() {
-  return fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=usd')
-    .then(res => res.json())
-    .then(data => {
-      zecToUsd = parseFloat(data.zcash.usd);
-      document.body.dataset.zecToUsd = zecToUsd;
-      console.log('ZEC to USD exchange rate:', zecToUsd);
-    })
-    .catch(err => {
-      console.error('Failed to fetch exchange rate:', err);
-      zecToUsd = 44.85; // fallback
-      document.body.dataset.zecToUsd = zecToUsd;
+    function fetchExchangeRate() {
+      return fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=usd')
+        .then(res => res.json())
+        .then(data => {
+          zecToUsd = parseFloat(data.zcash.usd);
+          document.body.dataset.zecToUsd = zecToUsd;
+          console.log('ZEC to USD exchange rate:', zecToUsd);
+        })
+        .catch(err => {
+          console.error('Failed to fetch exchange rate:', err);
+          zecToUsd = 44.85; // fallback
+          document.body.dataset.zecToUsd = zecToUsd;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchExchangeRate().then(fetchAllData);
     });
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetchExchangeRate().then(fetchAllData);
-});
+    const cardContainer = document.getElementById('backlog');
+    let newCards = [];
 
-  const cardContainer = document.getElementById('backlog');
-  let newCards = [];
+    function switchToUSD(id, amountZEC, targetZEC) {
+      const usdAmount = (amountZEC * zecToUsd).toFixed(2);
+      const usdTarget = (targetZEC * zecToUsd).toFixed(2);
+      document.getElementById(id).innerHTML = `<strong>Raised $${usdAmount} of $${usdTarget} USD</strong>`;
+    }
 
-  function switchToUSD(id, amountZEC, targetZEC) {
-    const usdAmount = (amountZEC * zecToUsd).toFixed(2);
-    const usdTarget = (targetZEC * zecToUsd).toFixed(2);
-    document.getElementById(id).innerHTML = `<strong>Raised $${usdAmount} of $${usdTarget} USD</strong>`;
-  }
+    function switchToZEC(id, amountZEC, targetZEC) {
+      document.getElementById(id).innerHTML = `<strong>Raised ${amountZEC} of ${targetZEC} ZEC</strong>`;
+    }
 
-  function switchToZEC(id, amountZEC, targetZEC) {
-    document.getElementById(id).innerHTML = `<strong>Raised ${amountZEC} of ${targetZEC} ZEC</strong>`;
-  }
+    function openModal(button) {
+      const modal = document.getElementById('details-modal');
+      const description = decodeURIComponent(button.getAttribute('data-description') || '');
+      const title = decodeURIComponent(button.getAttribute('data-title') || 'Details');
+      const tags = decodeURIComponent(button.getAttribute('data-tags') || '');
+      const priority = decodeURIComponent(button.getAttribute('data-priority') || '');
+      const milestonesJSON = decodeURIComponent(button.getAttribute('data-milestones') || '[]');
 
-  function openModal(button) {
-  const modal = document.getElementById('details-modal');
+      let milestones = [];
+      try {
+        milestones = JSON.parse(milestonesJSON);
+      } catch (e) {
+        console.error('Invalid milestones:', milestonesJSON);
+      }
 
-  const description = decodeURIComponent(button.getAttribute('data-description') || '');
-  const title = decodeURIComponent(button.getAttribute('data-title') || 'Details');
-  const tags = decodeURIComponent(button.getAttribute('data-tags') || '');
-  const priority = decodeURIComponent(button.getAttribute('data-priority') || '');
-  const milestonesJSON = decodeURIComponent(button.getAttribute('data-milestones') || '[]');
+      // Description and extras
+      let html = `<p>${description || '<em>No description available</em>'}</p>`;
 
-  let milestones = [];
-  try {
-    milestones = JSON.parse(milestonesJSON);
-  } catch (e) {
-    console.error('Invalid milestones:', milestonesJSON);
-  }
+      if (tags) {
+        html += `<p><strong>Tags:</strong> ${tags}</p>`;
+      }
 
-  // Description and extras
-  let html = `<p>${description || '<em>No description available</em>'}</p>`;
+      html += `<p><strong>Priority:</strong> ${priority}</p>`;
 
-  if (tags) {
-    html += `<p><strong>Tags:</strong> ${tags}</p>`;
-  }
-
-  html += `<p><strong>Priority:</strong> ${priority}</p>`;
-
-  if (milestones.length > 0) {
-  html += `<p><strong>Milestones:</strong></p><ul>`;
-  milestones.forEach(m => {
-    const statusIcon = m.status === 'COMPLETED' ? '✅' :
-                       m.status === 'IN PROGRESS' ? '⏳' :
-                       '🕓';
-    html += `<li>
+      if (milestones.length > 0) {
+        html += `<p><strong>Milestones:</strong></p><ul>`;
+        milestones.forEach(m => {
+          const statusIcon = m.status === 'COMPLETED' ? '✅' :
+            m.status === 'IN PROGRESS' ? '⏳' :
+              '🕓';
+          html += `<li>
       <strong>${m.name}</strong><br>
       ${statusIcon} <em>Status:</em> ${m.status} |
       <em>Stage:</em> ${m.stage} |
       <em>Target:</em> ${new Date(m.target_date).toLocaleDateString()}
     </li>`;
-  });
-  html += `</ul>`;
-}
+        });
+        html += `</ul>`;
+      }
 
+      modal.querySelector('h2').textContent = title;
+      modal.querySelector('p').innerHTML = html;
 
-  modal.querySelector('h2').textContent = title;
-  modal.querySelector('p').innerHTML = html;
+      document.getElementById('modal-overlay').style.display = 'block';
+      modal.style.display = 'block';
+    }
 
-  document.getElementById('modal-overlay').style.display = 'block';
-  modal.style.display = 'block';
-}
+    function closeModal() {
+      document.getElementById('modal-overlay').style.display = 'none';
+      document.getElementById('details-modal').style.display = 'none';
+    }
 
+    function openQRModal(button) {
+      // Parse wallet list put in data-wallets='[...]' on the button
+      let wallets = [];
+      try {
+        wallets = JSON.parse(button.getAttribute('data-wallets'));
+      } catch (e) {
+        console.error('Invalid wallet_addresses JSON:', e);
+      }
 
+      // Pick first address (or blank if none)
+      const addr = wallets;
 
+      // Build QR-code URL (200 × 200 PNG)
+      const qrSrc = addr
+        ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=283748&data=${encodeURIComponent(addr)}`
+        : '';
 
-  function closeModal() {
-    document.getElementById('modal-overlay').style.display = 'none';
-    document.getElementById('details-modal').style.display = 'none';
-  }
+      // Swap the image
+      const qrImg = document.getElementById('qr-img');
+      qrImg.src = qrSrc;
+      qrImg.alt = addr ? `QR code for ${addr}` : 'No address';
 
-  function openQRModal(button) {
-  // Parse wallet list put in data-wallets='[...]' on the button
-  let wallets = [];
-  try {
-    wallets = JSON.parse(button.getAttribute('data-wallets'));
-  } catch (e) {
-    console.error('Invalid wallet_addresses JSON:', e);
-  }
+      // Show the list (or a fallback) under the QR
+      const qrModal = document.getElementById('qr-modal');
+      qrModal.querySelector('p').innerHTML = addr
+        ? `<code>${addr}</code>`
+        : '<em>No wallet address available</em>';
 
-  // Pick first address (or blank if none)
-  const addr = wallets;
+      // Open modal
+      document.getElementById('modal-overlay').style.display = 'block';
+      qrModal.style.display = 'block';
+    }
 
-  // Build QR-code URL (200 × 200 PNG)
-  const qrSrc = addr
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(addr)}`
-    : '';
+    function closeQRModal() {
+      document.getElementById('modal-overlay').style.display = 'none';
+      document.getElementById('qr-modal').style.display = 'none';
+    }
 
-  // Swap the image
-  const qrImg = document.getElementById('qr-img');
-  qrImg.src = qrSrc;
-  qrImg.alt = addr ? `QR code for ${addr}` : 'No address';
+    function setActiveToggle(button) {
+      const parent = button.parentElement;
+      parent.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
 
-  // Show the list (or a fallback) under the QR
-  const qrModal = document.getElementById('qr-modal');
-  qrModal.querySelector('p').innerHTML = addr
-    ? `<code>${addr}</code>`
-    : '<em>No wallet address available</em>';
+    function createCard({ id, title, date, raised, target, progress, creators, status, wallet_addresses, description, tags, priority, milestones }) {
+      let statusClass = '';
+      if (status === 'COMPLETED') statusClass = 'status-completed';
+      else if (status === 'IN PROGRESS') statusClass = 'status-inprogress';
+      else if (status === 'BLOCKED') statusClass = 'status-blocked';
+      else if (status === 'NOT STARTED') statusClass = 'status-notstarted';
 
-  // Open modal
-  document.getElementById('modal-overlay').style.display = 'block';
-  qrModal.style.display = 'block';
-}
-
-
-
-
-  function closeQRModal() {
-    document.getElementById('modal-overlay').style.display = 'none';
-    document.getElementById('qr-modal').style.display = 'none';
-  }
-
-  function setActiveToggle(button) {
-    const parent = button.parentElement;
-    parent.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-  }
-
-  function createCard({ id, title, date, contributors, raised, target, progress, creators, status, wallet_addresses, description, tags, priority, milestones }) {
-    let statusClass = '';
-    if (status === 'COMPLETED') statusClass = 'status-completed';
-    else if (status === 'IN PROGRESS') statusClass = 'status-inprogress';
-    else if (status === 'BLOCKED') statusClass = 'status-blocked';
-    else if (status === 'NOT STARTED') statusClass = 'status-notstarted';
-
-    return `
+      return `
       <div class="card">
         <button
   class="menu-button"
@@ -706,169 +734,298 @@ document.addEventListener('DOMContentLoaded', () => {
 >⋯</button>
         <div class="status-badge ${statusClass}">${status}</div>
         <h3>${title}</h3>
-        <p>👤 ${creators}<br>📅 ${date}<br>👥 ${contributors} contributors</p>
-
-        
-
+        <p>👤 ${creators}<br>📅 ${date}</p>
         <p id="${id}"><strong>Raised ${raised} of ${target} ZEC</strong></p>
         <div class="progress-bar" data-progress="${progress}">
           <div class="progress" style="width: ${progress}%;"></div> 
           <div class="checkpoint" style="left: 0%;" data-milestone="Analyze" onclick="showMilestoneInfo('Analyze')"></div>
-
           <div class="checkpoint-label" style="left: 1%">
-  <span class="milestone-label" onclick="showMilestoneInfo('Analyze')">Analyze</span>
-</div>
-
+          <span class="milestone-label" onclick="showMilestoneInfo('Analyze')">Analyze</span></div>
           <div class="checkpoint" style="left: 25%;" data-milestone="Design" onclick="showMilestoneInfo('Design')"></div>
-
           <div class="checkpoint-label" style="left: 26%">
-            <span class="milestone-label" onclick="showMilestoneInfo('Design')">Design</span>
-</div>
+          <span class="milestone-label" onclick="showMilestoneInfo('Design')">Design</span></div>
           <div class="checkpoint" style="left: 50%;" data-milestone="Develop" onclick="showMilestoneInfo('Develop')"></div>
-
           <div class="checkpoint-label" style="left: 51%">
-            <span class="milestone-label" onclick="showMilestoneInfo('Develop')">Develop</span>
-</div>
+          <span class="milestone-label" onclick="showMilestoneInfo('Develop')">Develop</span></div>
           <div class="checkpoint" style="left: 75%;" data-milestone="Deploy" onclick="showMilestoneInfo('Deploy')"></div>
-
           <div class="checkpoint-label" style="left: 76%">
-            <span class="milestone-label" onclick="showMilestoneInfo('Deploy')">Deploy</span>
-</div>
+          <span class="milestone-label" onclick="showMilestoneInfo('Deploy')">Deploy</span></div>
           <div class="checkpoint" style="left: 98%;" data-milestone="Maintain" onclick="showMilestoneInfo('Maintain')"></div>
-
           <div class="checkpoint-label" style="left: 98%">
-            <span class="milestone-label" onclick="showMilestoneInfo('Maintain')">Maintain</span>
-</div>
+          <span class="milestone-label" onclick="showMilestoneInfo('Maintain')">Maintain</span></div>
+          </div><br>
+          <button class="contribute-button" onclick="openQRModal(this)" data-wallets='${JSON.stringify(wallet_addresses)}'>CONTRIBUTE</button>
         </div>
-        <br>
-        <button class="contribute-button" onclick="openQRModal(this)" data-wallets='${JSON.stringify(wallet_addresses)}'>CONTRIBUTE</button>
-      </div>
     `;
-  }
+    }
 
-  function renderSortedCards() {
-  const sortType = currentSort;
-  const searchQuery = document.getElementById('search').value.toLowerCase();
+    function renderSortedCards() {
+      const sortType = currentSort;
+      const searchQuery = document.getElementById('search').value.toLowerCase();
 
-  let sorted = [...newCards].filter(card => {
-    const matchesSearch = !searchQuery ||
-      card.title.toLowerCase().includes(searchQuery) ||
-      (card.tags || []).some(tag => tag.toLowerCase().includes(searchQuery));
+      let sorted = [...newCards].filter(card => {
+        const matchesSearch = !searchQuery ||
+          card.title.toLowerCase().includes(searchQuery) ||
+          (card.tags || []).some(tag => tag.toLowerCase().includes(searchQuery));
 
-    const matchesStatus = activeStatuses.length === 0 || activeStatuses.includes(card.status);
+        const matchesStatus = activeStatuses.length === 0 || activeStatuses.includes(card.status);
 
-    return matchesSearch && matchesStatus;
-  });
+        return matchesSearch && matchesStatus;
+      });
 
-  if (sortType === 'progress-desc') {
-    sorted.sort((a, b) => b.progress - a.progress);
-  } else if (sortType === 'progress-asc') {
-    sorted.sort((a, b) => a.progress - b.progress);
-  } else if (sortType === 'alpha-asc') {
-    sorted.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortType === 'alpha-desc') {
-    sorted.sort((a, b) => b.title.localeCompare(a.title));
-  }
+      if (sortType === 'progress-desc') {
+        sorted.sort((a, b) => b.progress - a.progress);
+      } else if (sortType === 'progress-asc') {
+        sorted.sort((a, b) => a.progress - b.progress);
+      } else if (sortType === 'alpha-asc') {
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (sortType === 'alpha-desc') {
+        sorted.sort((a, b) => b.title.localeCompare(a.title));
+      }
 
-  // Render cards
-  cardContainer.innerHTML = '';
-  sorted.forEach(card => {
-    cardContainer.innerHTML += createCard(card);
-  });
+      // Render cards
+      cardContainer.innerHTML = '';
+      sorted.forEach(card => {
+        cardContainer.innerHTML += createCard(card);
+      });
 
-  // Fill checkpoints
-  document.querySelectorAll('.progress-bar').forEach(bar => {
-    const percent = parseFloat(bar.dataset.progress);
-    bar.querySelectorAll('.checkpoint').forEach(cp => {
-      const match = cp.style.left.match(/(\d+(?:\.\d+)?)%/);
-      if (match) {
-        const leftPercent = parseFloat(match[1]);
-        if (percent >= leftPercent) {
-          cp.classList.add('filled');
+      // Fill checkpoints
+      document.querySelectorAll('.progress-bar').forEach(bar => {
+        const percent = parseFloat(bar.dataset.progress);
+        bar.querySelectorAll('.checkpoint').forEach(cp => {
+          const match = cp.style.left.match(/(\d+(?:\.\d+)?)%/);
+          if (match) {
+            const leftPercent = parseFloat(match[1]);
+            if (percent >= leftPercent) {
+              cp.classList.add('filled');
+            }
+          }
+        });
+      });
+
+      // 🧠 Apply current currency toggle to new cards
+      const isUSD = document.querySelector('#summary-currency-toggle button.active')?.textContent === 'USD';
+      sorted.forEach(card => {
+        if (isUSD) {
+          switchToUSD(card.id, card.raised, card.target);
+        } else {
+          switchToZEC(card.id, card.raised, card.target);
         }
+      });
+    }
+
+    let currentSort = 'progress-desc';
+
+    function toggleSortMenu() {
+      const menu = document.getElementById('sort-menu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function selectSort(type) {
+      currentSort = type;
+      document.getElementById('sort-menu').style.display = 'none';
+      renderSortedCards();
+    }
+
+    window.addEventListener('click', e => {
+      const menu = document.getElementById('sort-menu');
+      if (!e.target.closest('.sort-dropdown')) {
+        menu.style.display = 'none';
       }
     });
-  });
 
-  // 🧠 Apply current currency toggle to new cards
-  const isUSD = document.querySelector('#summary-currency-toggle button.active')?.textContent === 'USD';
-  sorted.forEach(card => {
-    if (isUSD) {
-      switchToUSD(card.id, card.raised, card.target);
-    } else {
-      switchToZEC(card.id, card.raised, card.target);
+    function switchSummaryCurrency(to, clickedButton) {
+      const pairs = ['balance', 'total-requested', 'total-received', 'total-spent', 'total-earned'];
+      pairs.forEach(key => {
+        document.getElementById(`${key}-zec`).style.display = to === 'ZEC' ? 'block' : 'none';
+        document.getElementById(`${key}-usd`).style.display = to === 'USD' ? 'block' : 'none';
+      });
+
+      // Update all card displays to selected currency
+      newCards.forEach(card => {
+        if (to === 'USD') {
+          switchToUSD(card.id, card.raised, card.target);
+        } else {
+          switchToZEC(card.id, card.raised, card.target);
+        }
+      });
+
+      // Update summary toggle button appearance
+      const summaryButtons = document.querySelectorAll('#summary-currency-toggle button');
+      summaryButtons.forEach(btn => btn.classList.remove('active'));
+      if (clickedButton) clickedButton.classList.add('active');
     }
-  });
+
+    function toggleHamburger() {
+      const dropdown = document.getElementById("hamburger-dropdown");
+      dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+
+    window.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("hamburger-dropdown");
+      const isHamburger = event.target.closest(".hamburger-menu");
+      if (!isHamburger) {
+        dropdown.style.display = "none";
+      }
+    });
+
+    const summaryDescriptions = {
+      available: "Funds currently available in the wallet.",
+      requested: "Total $ that has been requested across all proposals.",
+      received: "Total $ received through donations or other contributions.",
+      spent: "Total $ that has already been allocated or spent.",
+      earned: "Total $ earned through completed work or milestones."
+    };
+
+    function openSummaryModal(type) {
+      document.getElementById("summary-title").textContent = type.charAt(0).toUpperCase() + type.slice(1);
+      document.getElementById("summary-description").textContent = summaryDescriptions[type] || "No description available.";
+      document.getElementById("modal-overlay").style.display = 'block';
+      document.getElementById("summary-modal").style.display = 'block';
+    }
+
+    function closeSummaryModal() {
+      document.getElementById("modal-overlay").style.display = 'none';
+      document.getElementById("summary-modal").style.display = 'none';
+    }
+
+    const milestoneDescriptions = {
+      "Analyze": "Understanding the problem, gathering requirements, and planning the work.",
+      "Design": "Architecting the solution and preparing specifications or prototypes.",
+      "Develop": "Writing and testing code or content to implement the solution.",
+      "Deploy": "Releasing the solution into production or public view.",
+      "Maintain": "Monitoring, fixing issues, and improving the system post-launch."
+    };
+
+    function showMilestoneInfo(name) {
+      document.getElementById("milestone-title").textContent = name;
+      document.getElementById("milestone-description").textContent = milestoneDescriptions[name] || "No description available.";
+      document.getElementById("modal-overlay").style.display = 'block';
+      document.getElementById("milestone-modal").style.display = 'block';
+    }
+
+    function closeMilestoneModal() {
+      document.getElementById("modal-overlay").style.display = 'none';
+      document.getElementById("milestone-modal").style.display = 'none';
+    }
+
+    document.getElementById('modal-overlay').addEventListener('click', () => {
+      closeModal();
+      closeQRModal();
+      closeSummaryModal();
+      closeMilestoneModal(); // ✅ Add this line
+    });
+  </script>
+  <style>
+a:link {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
 }
 
+a:visited {
+  color: orange;
+  background-color: transparent;
+  text-decoration: none;
+}
 
-  // Fetch data and render on page load
-  /*
-  window.addEventListener('DOMContentLoaded', () => {
-fetchExchangeRate().then(() => {
-fetch('https://zdabe.onrender.com/api/v1/funding-summary')
-  .then(res => res.json())
-  .then(summary => {
-    const fields = [
-      { key: 'balance', value: summary.total_available },
-      { key: 'total-requested', value: summary.total_requested },
-      { key: 'total-received', value: summary.total_received },
-      { key: 'total-spent', value: summary.total_spent },
-      { key: 'total-earned', value: summary.total_earned },
-    ];
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
 
-    fields.forEach(({ key, value }) => {
-      const zec = parseFloat(value).toFixed(3);
-      const usd = (parseFloat(value) * zecToUsd).toFixed(2);
-      document.getElementById(`${key}-zec`).textContent = `${zec} ZEC`;
-      document.getElementById(`${key}-usd`).textContent = `$${usd} USD`;
-    });
-  })
-  .catch(err => {
-    console.error("Failed to fetch funding summary:", err);
-  });
+a:active {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: underline;
+}
+</style>
+  <footer class="site-footer">
+    <span style="border: 1px solid white; padding: 0.75rem;"><a href="https://coff.ee/jaxf" target="_blank"><u>Created by Jax.</u></a></span>
+  </footer>
 
+  <!-- 1. Load Supabase from CDN FIRST -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- 2. Your script goes AFTER the CDN has loaded -->
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://shxxgatskiyiqypapjcd.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoeHhnYXRza2l5aXF5cGFwamNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MjIzMzIsImV4cCI6MjA2NjE5ODMzMn0.5Z6Ro7Cgtxf4tuq4H-zYXe6TUnQjl7_S52K02gB4cIY';
 
 
-  document.getElementById('card-loading').style.display = 'block';
-document.getElementById('backlog').style.display = 'none';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-  fetch('https://zdabe.onrender.com/api/v1/cards')
-  .then(response => response.json())
-  .then(data => {
-    const cardSummaries = data.cards || [];
+    async function fetchAllData() {
+      const { data: cards, error } = await supabase
+        .from('cards')
+        .select('*')
+        .eq('visibility', 'PUBLIC')
+      const { data: walletInfo } = await supabase
+        .from('wallet_info')
+        .select('*')
 
-    return Promise.all(
-      cardSummaries.map(card =>
-        fetch(`https://zdabe.onrender.com/api/v1/cards/${card.id}`)
-          .then(res => res.json())
-          .catch(err => {
-            console.error(`Failed to load card ${card.id}:`, err);
-            return null;
-          })
-      )
-    );
-  })
-  .then(fullCards => {
-    newCards = fullCards
-      .filter(card => card !== null)
-      .map(card => {
+
+      if (error) {
+        console.error('Supabase error:', error);
+      }
+
+      let total_earned = 0;
+      let total_spent = 0;
+      let total_requested = 0;
+      let total_received = 0;
+      let total_available = 0;
+      var b = 0;
+      for (const card of cards) {
+        const totals = card.wallet_info?.totals || {};
+
+        total_earned += parseFloat(card.funding_earned ?? 0);
+        if (walletInfo[b].total_sent != "NaN" && walletInfo[b].total_sent != undefined) {
+          total_spent += walletInfo[b].total_sent;
+        } else {
+          total_spent += 0;
+        }
+        total_requested += parseFloat(card.funding_requested ?? 0);
+        total_received += walletInfo[b]?.total_received || 0;
+        total_available += walletInfo[b]?.balance || 0;
+        b++;
+      }
+
+      document.getElementById("total-earned-zec").textContent = `${(0).toFixed(3)} ZEC`; //replaced total_earned.toFixed(3) with (0).toFixed(3) for now
+      document.getElementById("total-spent-zec").textContent = `${total_spent.toFixed(3)} ZEC`;
+      document.getElementById("total-requested-zec").textContent = `${total_requested.toFixed(3)} ZEC`;
+      document.getElementById("total-received-zec").textContent = `${total_received.toFixed(3)} ZEC`;
+      document.getElementById("balance-zec").textContent = `${total_available.toFixed(3)} ZEC`;
+
+      // USD versions
+      const zecToUsd = parseFloat(document.body.dataset.zecToUsd || 44.85);
+      document.getElementById("total-earned-usd").textContent = `$${(0).toFixed(2)} USD`; //replaced (total_earned * zecToUsd).toFixed(2) with (0).toFixed(2) for now
+      document.getElementById("total-spent-usd").textContent = `$${(total_spent * zecToUsd).toFixed(2)} USD`;
+      document.getElementById("total-requested-usd").textContent = `$${(total_requested * zecToUsd).toFixed(2)} USD`;
+      document.getElementById("total-received-usd").textContent = `$${(total_received * zecToUsd).toFixed(2)} USD`;
+      document.getElementById("balance-usd").textContent = `$${(total_available * zecToUsd).toFixed(2)} USD`;
+      var a = 0;
+      newCards = cards.map(card => {
         const wallet = card.wallet_info?.totals || {};
-        const received = parseFloat(wallet.total_received || 0);
+        const received = walletInfo[a].total_received || 0;
+        //console.log('Received for card', card.id, walletInfo[a].balance);
         const requested = parseFloat(card.funding_requested || 0);
         const progress = requested > 0 ? (100 * received / requested).toFixed(2) : 0;
 
+        //console.log('Wallets for card', card.id, (card.wallet_addresses[0] ));
+        a++;
         return {
           id: card.id,
           title: card.title,
           date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          contributors: card.contributors || 0,
+          //contributors: card.contributors || 0,
           raised: received,
           target: requested,
           progress: parseFloat(progress),
           creators: (card.creators || []).join(" & "),
           status: card.status || "IN PROGRESS",
-          wallet_addresses: (card.wallet_info?.addresses || []).map(w => w.address),
+          wallet_addresses: card.wallet_addresses[0],
           description: card.description || '',
           tags: card.tags || [],
           priority: card.priority || 'N/A',
@@ -876,239 +1033,12 @@ document.getElementById('backlog').style.display = 'none';
         };
       });
 
-    document.getElementById('card-loading').style.display = 'none';
-  document.getElementById('backlog').style.display = 'grid';
-    renderSortedCards();
-  });
-  });
-  })*/
-
-let currentSort = 'progress-desc';
-
-function toggleSortMenu() {
-  const menu = document.getElementById('sort-menu');
-  menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-}
-
-function selectSort(type) {
-  currentSort = type;
-  document.getElementById('sort-menu').style.display = 'none';
-  renderSortedCards();
-}
-
-window.addEventListener('click', e => {
-  const menu = document.getElementById('sort-menu');
-  if (!e.target.closest('.sort-dropdown')) {
-    menu.style.display = 'none';
-  }
-});
-
-function switchSummaryCurrency(to, clickedButton) {
-  const pairs = ['balance', 'total-requested', 'total-received', 'total-spent', 'total-earned'];
-  pairs.forEach(key => {
-    document.getElementById(`${key}-zec`).style.display = to === 'ZEC' ? 'block' : 'none';
-    document.getElementById(`${key}-usd`).style.display = to === 'USD' ? 'block' : 'none';
-  });
-
-  // Update all card displays to selected currency
-  newCards.forEach(card => {
-    if (to === 'USD') {
-      switchToUSD(card.id, card.raised, card.target);
-      } else {
-      switchToZEC(card.id, card.raised, card.target);
+      document.getElementById('card-loading').style.display = 'none';
+      document.getElementById('backlog').style.display = 'grid';
+      renderSortedCards();
     }
-  });
-
-  // Update summary toggle button appearance
-  const summaryButtons = document.querySelectorAll('#summary-currency-toggle button');
-  summaryButtons.forEach(btn => btn.classList.remove('active'));
-  if (clickedButton) clickedButton.classList.add('active');
-}
-
-
-function toggleHamburger() {
-  const dropdown = document.getElementById("hamburger-dropdown");
-  dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-}
-
-window.addEventListener("click", function(event) {
-  const dropdown = document.getElementById("hamburger-dropdown");
-  const isHamburger = event.target.closest(".hamburger-menu");
-  if (!isHamburger) {
-    dropdown.style.display = "none";
-  }
-});
-
-
-const summaryDescriptions = {
-  available: "Funds currently available in the wallet.",
-  requested: "Total $ that has been requested across all proposals.",
-  received: "Total $ received through donations or other contributions.",
-  spent: "Total $ that has already been allocated or spent.",
-  earned: "Total $ earned through completed work or milestones."
-};
-
-function openSummaryModal(type) {
-  document.getElementById("summary-title").textContent = type.charAt(0).toUpperCase() + type.slice(1);
-  document.getElementById("summary-description").textContent = summaryDescriptions[type] || "No description available.";
-  document.getElementById("modal-overlay").style.display = 'block';
-  document.getElementById("summary-modal").style.display = 'block';
-}
-
-function closeSummaryModal() {
-  document.getElementById("modal-overlay").style.display = 'none';
-  document.getElementById("summary-modal").style.display = 'none';
-}
-
-const milestoneDescriptions = {
-  "Analyze": "Understanding the problem, gathering requirements, and planning the work.",
-  "Design": "Architecting the solution and preparing specifications or prototypes.",
-  "Develop": "Writing and testing code or content to implement the solution.",
-  "Deploy": "Releasing the solution into production or public view.",
-  "Maintain": "Monitoring, fixing issues, and improving the system post-launch."
-};
-
-function showMilestoneInfo(name) {
-  document.getElementById("milestone-title").textContent = name;
-  document.getElementById("milestone-description").textContent = milestoneDescriptions[name] || "No description available.";
-  document.getElementById("modal-overlay").style.display = 'block';
-  document.getElementById("milestone-modal").style.display = 'block';
-}
-
-function closeMilestoneModal() {
-  document.getElementById("modal-overlay").style.display = 'none';
-  document.getElementById("milestone-modal").style.display = 'none';
-}
-
-document.getElementById('modal-overlay').addEventListener('click', () => {
-  closeModal();
-  closeQRModal();
-  closeSummaryModal();
-  closeMilestoneModal(); // ✅ Add this line
-});
-
-
-
-</script>
-
-<footer class="site-footer">
-  <p>Jax was here</p>
-</footer>
-
-<!-- 1. Load Supabase from CDN FIRST -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<!-- 2. Your script goes AFTER the CDN has loaded -->
-<script>
-  // Initialize Supabase client
-  const supabaseUrl = 'https://shxxgatskiyiqypapjcd.supabase.co';
-  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoeHhnYXRza2l5aXF5cGFwamNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MjIzMzIsImV4cCI6MjA2NjE5ODMzMn0.5Z6Ro7Cgtxf4tuq4H-zYXe6TUnQjl7_S52K02gB4cIY';
-
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-  async function fetchAllData() {
-    const { data: cards, error } = await supabase
-  .from('cards')
-  .select('*')
-  .eq('visibility', 'PUBLIC')
-const { data: walletInfo } = await supabase
-  .from('wallet_info')
-  .select('*')
-      
-
-    if (error) {
-      console.error('Supabase error:', error);
-    } else {
-      /*console.log('Fetched data:', cards);
-      console.log('Fetched wallets:', walletInfo);*/
-      // Call render function or process data
-    }
-    let total_earned = 0;
-    let total_spent = 0;
-    let total_requested = 0;
-    let total_received = 0;
-    let total_available = 0;
-    var b = 0;
-    for (const card of cards) {
-      const totals = card.wallet_info?.totals || {};
-
-      total_earned += parseFloat(card.funding_earned ?? 0);
-      if( walletInfo[b].total_sent != "NaN" && walletInfo[b].total_sent != undefined) {
-        total_spent += walletInfo[b].total_sent;
-      } else {
-        total_spent += 0;
-      }
-      total_requested += parseFloat(card.funding_requested ?? 0);
-      total_received += walletInfo[b]?.total_received || 0;
-      total_available += walletInfo[b]?.balance || 0;
-      b++;
-    }
-
-    // 🟢 You can now use these values to update the summary
-    /*console.log({
-      total_earned,
-      total_spent,
-      total_requested,
-      total_received,
-      total_available
-    });*/
-    document.getElementById("total-earned-zec").textContent = `${total_earned.toFixed(3)} ZEC`;
-    document.getElementById("total-spent-zec").textContent = `${total_spent.toFixed(3)} ZEC`;
-    document.getElementById("total-requested-zec").textContent = `${total_requested.toFixed(3)} ZEC`;
-    document.getElementById("total-received-zec").textContent = `${total_received.toFixed(3)} ZEC`;
-    document.getElementById("balance-zec").textContent = `${total_available.toFixed(3)} ZEC`;
-
-    // USD versions
-    const zecToUsd = parseFloat(document.body.dataset.zecToUsd || 44.85);
-    document.getElementById("total-earned-usd").textContent = `$${(total_earned * zecToUsd).toFixed(2)} USD`;
-    document.getElementById("total-spent-usd").textContent = `$${(total_spent * zecToUsd).toFixed(2)} USD`;
-    document.getElementById("total-requested-usd").textContent = `$${(total_requested * zecToUsd).toFixed(2)} USD`;
-    document.getElementById("total-received-usd").textContent = `$${(total_received * zecToUsd).toFixed(2)} USD`;
-    document.getElementById("balance-usd").textContent = `$${(total_available * zecToUsd).toFixed(2)} USD`;
-  var a = 0;
-    newCards = cards.map(card => {
-  const wallet = card.wallet_info?.totals || {};
-  const received = walletInfo[a].total_received || 0;
-  //console.log('Received for card', card.id, walletInfo[a].balance);
-  const requested = parseFloat(card.funding_requested || 0);
-  const progress = requested > 0 ? (100 * received / requested).toFixed(2) : 0;
-  
-//console.log('Wallets for card', card.id, (card.wallet_addresses[0] ));
-      a++;
-  return {
-    id: card.id,
-    title: card.title,
-    date: new Date(card.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-    contributors: card.contributors || 0,
-    raised: received,
-    target: requested,
-    progress: parseFloat(progress),
-    creators: (card.creators || []).join(" & "),
-    status: card.status || "IN PROGRESS",
-    wallet_addresses: card.wallet_addresses[0],
-    description: card.description || '',
-    tags: card.tags || [],
-    priority: card.priority || 'N/A',
-    milestones: card.milestones || []
-  };
-});
-
-document.getElementById('card-loading').style.display = 'none';
-document.getElementById('backlog').style.display = 'grid';
-renderSortedCards();
-  }
-
-  
-
-  // Fetch when DOM is ready
-  document.addEventListener('DOMContentLoaded', fetchAllData);
-
-
-
-  
-</script>
-
-
-
+    // Fetch when DOM is ready
+    document.addEventListener('DOMContentLoaded', fetchAllData);
+  </script>
 </body>
 </html>
